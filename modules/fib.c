@@ -1,5 +1,12 @@
 #include <emscripten.h>
-// #include <lame/lame.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <lame/lame.h>
+
+#define MAX_SAMPLES 65536
+#define PCM_BUF_SIZE MAX_SAMPLES * sizeof(float)
+#define BUF_SIZE (MAX_SAMPLES * 1.25 + 7200)
 
 EMSCRIPTEN_KEEPALIVE
 int fib(int n) {
