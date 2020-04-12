@@ -1,7 +1,7 @@
 // import React from 'react';
 // import ReactDOM from 'react-dom';
 // import App from './components/App';
-import Module from '../modules/artifacts/fib.js';
+import Module from '../modules/artifacts/peppermint.js';
 
 const Instance = Module();
 
