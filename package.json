@@ -25,7 +25,7 @@
     "inlineCss": true
   },
   "staticFiles": {
-    "staticPath": "modules",
+    "staticPath": "modules/artifacts",
     "watcherGlob": "**"
   },
   "browserslist": [

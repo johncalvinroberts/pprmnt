@@ -1,4 +1,5 @@
 #include <emscripten.h>
+// #include <lame/lame.h>
 
 EMSCRIPTEN_KEEPALIVE
 int fib(int n) {
