@@ -4,13 +4,14 @@ import useAudioContext from './useAudioContext';
 import { MESSAGE_TYPES } from '../constants';
 import { delay } from '../utils';
 
-const { INIT, CREATE_JOB, CLEANUP } = MESSAGE_TYPES;
+const { INIT, CREATE_JOB, FINISH_JOB, CLEANUP } = MESSAGE_TYPES;
 
 const createWorker = () => new Worker('../peppermint.worker.js');
 
 export default () => {
   const [error, setError] = useState(null);
   const [isReady, setIsReady] = useState(false);
+  const [data, setData] = useState(null);
   const worker = useMemo(createWorker, []);
 
   const { decodeAudioDataToUInt8Array } = useAudioContext();
@@ -23,7 +24,9 @@ export default () => {
       case INIT:
         setIsReady(true);
         break;
-
+      case FINISH_JOB:
+        setData(data);
+        break;
       default:
         break;
     }
