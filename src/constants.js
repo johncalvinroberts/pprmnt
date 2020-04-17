@@ -1,0 +1,6 @@
+export const MESSAGE_TYPES = {
+  INIT: 'INIT',
+  CREATE_JOB: 'CREATE_JOB',
+  CLEANUP: 'CLEANUP',
+  FINISH_JOB: 'FINISH_JOB',
+};

@@ -4,16 +4,6 @@
 #include <lame/lame.h>
 
 
-EMSCRIPTEN_KEEPALIVE
-int fib(int n) {
-  int i, t, a = 0, b = 1;
-  for (i = 0; i < n; i++) {
-    t = a + b;
-    a = b;
-    b = t;
-  }
-  return b;
-}
 
 typedef struct {
   lame_global_flags *lame;
@@ -63,7 +53,7 @@ EMSCRIPTEN_KEEPALIVE
 ssize_t encoder_encode(encoder_t *enc, float *right, float *left,
  int nsamples, uint8_t *out, int out_sz) {
   ssize_t ret;
-
+  
   if (!enc) return -1;
   if (!right || !left) return -2;
   if (!nsamples) return -3;
@@ -72,6 +62,7 @@ ssize_t encoder_encode(encoder_t *enc, float *right, float *left,
   ret = lame_encode_buffer_ieee_float(enc->lame, right, left, nsamples, out, out_sz);
   return ret;
 }
+
 
 EMSCRIPTEN_KEEPALIVE 
 ssize_t encoder_flush(encoder_t *enc, uint8_t *out, int out_sz) {

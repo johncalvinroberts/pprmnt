@@ -11,5 +11,9 @@
     "import/extensions": "off",
     "no-shadow": "off",
     "no-alert": "error"
+  },
+  "globals": {
+    "importScripts": true,
+    "Module": true
   }
 }
