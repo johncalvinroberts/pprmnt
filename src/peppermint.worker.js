@@ -2,14 +2,7 @@ import { MESSAGE_TYPES } from './constants';
 
 importScripts('peppermint.js');
 
-const { CREATE_JOB, CLEANUP, FINISH_JOB } = MESSAGE_TYPES;
-
-const state = {
-  encoder: null,
-  samplesPtr: null,
-  codedPtr: null,
-  coded: null,
-};
+const { CREATE_JOB, CLEANUP, FINISH_JOB, INIT } = MESSAGE_TYPES;
 
 const channels = 2;
 const bitRate = 320; // up to 320 kbps
@@ -17,26 +10,28 @@ const bitRate = 320; // up to 320 kbps
 const Instance = Module();
 
 Instance.onRuntimeInitialized = () => {
-  init();
+  postMessage({ type: INIT });
 };
 
-function init() {
-  const maxDuration = 60 * 60;
-  const dataSize = (bitRate / 8) * 1024 * maxDuration * 1.25; // enough space for maxDuration seconds recording
-  state.data = new Uint8Array(dataSize);
-  postMessage({ type: 'INIT' });
-}
-
 function encode(payload, meta) {
+  // sample rate, length passed from audio context meta
   const { sampleRate, length: nsamples } = meta;
-
   const { left, right } = payload;
-
-  state.encoder = Instance._encoder_create(sampleRate, channels, bitRate);
+  // initialize encoder
+  const encoder = Instance._encoder_create(sampleRate, channels, bitRate);
+  /**
+   * according to lame api --
+   *
+   * mp3buffer_size (in bytes) = 1.25*num_samples + 7200.
+   *
+   * so we allocate the encoded pointer to this size
+   */
   const codedPtr = Instance._malloc(1.25 * nsamples + 7200);
 
+  // additionally, we allocate pointers for both left and right channels
   const samplesLeftPtr = Instance._malloc(nsamples * 4);
   const samplesRightPtr = Instance._malloc(nsamples * 4);
+
   const samplesLeft = new Float32Array(Instance.HEAPF32.buffer, samplesLeftPtr);
   samplesLeft.set(left);
   const samplesRight = new Float32Array(
@@ -48,7 +43,7 @@ function encode(payload, meta) {
   const coded = new Uint8Array(Instance.HEAPF32.buffer, codedPtr);
 
   const ret = Instance._eencode(
-    state.encoder,
+    encoder,
     samplesLeftPtr,
     samplesRightPtr,
     nsamples,
@@ -56,15 +51,28 @@ function encode(payload, meta) {
     coded.length,
   );
 
-  const mp3 = new Uint8Array(Instance.HEAP8.buffer, codedPtr, ret);
+  /**
+   * return value is an int
+   *
+   * if greater than 0, that means success
+   *
+   * return code will be number of bytes output in mp3buffer.
+   */
 
-  postMessage({ type: FINISH_JOB, payload: mp3 }, [mp3.buffer]);
+  if (ret > 0) {
+    const mp3 = new Uint8Array(Instance.HEAP8.buffer, codedPtr, ret);
+    postMessage({ type: FINISH_JOB, payload: mp3 }, [mp3.buffer]);
+    cleanup(encoder, samplesLeftPtr, samplesRightPtr, codedPtr);
+  } else {
+    throw new Error('Encoding MP3 failed');
+  }
 }
 
-function cleanup() {
-  Instance._encoder_destroy(state.encoder);
-  Instance._free(state.samplesPtr);
-  Instance._free(state.codedPtr);
+function cleanup(encoder, samplesLeftPtr, samplesRightPtr, codedPtr) {
+  Instance._encoder_destroy(encoder);
+  Instance._free(samplesLeftPtr);
+  Instance._free(samplesRightPtr);
+  Instance._free(codedPtr);
 }
 
 onmessage = ({ data }) => {

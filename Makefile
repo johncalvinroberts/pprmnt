@@ -1,5 +1,6 @@
 install:
 	docker pull johncalvinroberts/emscripten-lame
+	yarn
 build-docker:
 	bash ./scripts/build-docker.sh
 build-wasm:
