@@ -49,19 +49,21 @@ encoder_t *encoder_create(int rate, int channels, int bitrate) {
   return enc;
 }
 
-EMSCRIPTEN_KEEPALIVE 
-ssize_t encoder_encode(encoder_t *enc, float *right, float *left,
- int nsamples, uint8_t *out, int out_sz) {
-  ssize_t ret;
-  
-  if (!enc) return -1;
-  if (!right || !left) return -2;
-  if (!nsamples) return -3;
-  if (!out || !out_sz) return -4;
 
-  ret = lame_encode_buffer_ieee_float(enc->lame, right, left, nsamples, out, out_sz);
+EMSCRIPTEN_KEEPALIVE
+ssize_t eencode(encoder_t *enc,  const float pcm_l[], const float pcm_r[], const int nsamples,
+ unsigned char *mp3buf, const int mp3buf_size) {
+  ssize_t ret;
+
+  if (!enc) return -1;
+  if (!pcm_l || !pcm_r) return -2;
+  if (!nsamples) return -3;
+  if (!mp3buf || !mp3buf_size) return -4;
+
+  ret = lame_encode_buffer_ieee_float(enc->lame, pcm_l, pcm_r, nsamples, mp3buf, mp3buf_size);
   return ret;
 }
+
 
 
 EMSCRIPTEN_KEEPALIVE 
