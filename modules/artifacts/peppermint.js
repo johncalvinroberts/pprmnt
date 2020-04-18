@@ -2193,6 +2193,12 @@ var ___errno_location = Module["___errno_location"] = function() {
   return Module["asm"]["___errno_location"].apply(null, arguments)
 };
 
+var _eencode = Module["_eencode"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["_eencode"].apply(null, arguments)
+};
+
 var _emscripten_get_sbrk_ptr = Module["_emscripten_get_sbrk_ptr"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -2217,12 +2223,6 @@ var _encoder_destroy = Module["_encoder_destroy"] = function() {
   return Module["asm"]["_encoder_destroy"].apply(null, arguments)
 };
 
-var _encoder_encode = Module["_encoder_encode"] = function() {
-  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
-  return Module["asm"]["_encoder_encode"].apply(null, arguments)
-};
-
 var _encoder_flush = Module["_encoder_flush"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -2233,12 +2233,6 @@ var _fflush = Module["_fflush"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["_fflush"].apply(null, arguments)
-};
-
-var _fib = Module["_fib"] = function() {
-  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
-  return Module["asm"]["_fib"].apply(null, arguments)
 };
 
 var _free = Module["_free"] = function() {

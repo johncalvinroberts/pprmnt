@@ -14,7 +14,7 @@ export default () => {
   const [data, setData] = useState(null);
   const worker = useMemo(createWorker, []);
 
-  const { decodeAudioDataToUInt8Array } = useAudioContext();
+  const { decodeAudioData } = useAudioContext();
 
   const workerRef = useRef(null);
 
@@ -25,7 +25,8 @@ export default () => {
         setIsReady(true);
         break;
       case FINISH_JOB:
-        const blob = new Blob([data], { type: 'audio/mpeg' });
+        const { payload } = data;
+        const blob = new Blob([payload], { type: 'audio/mpeg' });
         setData(blob);
         break;
       default:
@@ -47,11 +48,11 @@ export default () => {
       if (!rawFile || !rawFile[0]) {
         return;
       }
-      const [payload, meta] = await decodeAudioDataToUInt8Array(rawFile[0]);
+      const [left, right, meta] = await decodeAudioData(rawFile[0]);
 
-      worker.postMessage({ type: CREATE_JOB, payload, meta });
+      worker.postMessage({ type: CREATE_JOB, payload: { left, right }, meta });
     },
-    [decodeAudioDataToUInt8Array, error, isReady, worker],
+    [decodeAudioData, error, isReady, worker],
   );
 
   useEffect(() => {

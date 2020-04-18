@@ -12,7 +12,7 @@ const state = {
 };
 
 const channels = 2;
-const bitRate = 64; // up to 320 kbps
+const bitRate = 320; // up to 320 kbps
 
 const Instance = Module();
 
@@ -29,28 +29,34 @@ function init() {
 
 function encode(payload, meta) {
   const { sampleRate, length: nsamples } = meta;
+
+  const { left, right } = payload;
+
   state.encoder = Instance._encoder_create(sampleRate, channels, bitRate);
-  const samplesPtr = Instance._malloc(nsamples * 4);
   const codedPtr = Instance._malloc(1.25 * nsamples + 7200);
-  state.samples = new Float32Array(Instance.HEAPF32.buffer, samplesPtr);
-  state.samples.set(payload);
+
+  const samplesLeftPtr = Instance._malloc(nsamples * 4);
+  const samplesRightPtr = Instance._malloc(nsamples * 4);
+  const samplesLeft = new Float32Array(Instance.HEAPF32.buffer, samplesLeftPtr);
+  samplesLeft.set(left);
+  const samplesRight = new Float32Array(
+    Instance.HEAPF32.buffer,
+    samplesRightPtr,
+  );
+  samplesRight.set(right);
+
   const coded = new Uint8Array(Instance.HEAPF32.buffer, codedPtr);
 
-  state.samplesPtr = samplesPtr;
-  state.codedPtr = codedPtr;
-
-  const ret = Instance._encoder_encode(
+  const ret = Instance._eencode(
     state.encoder,
-    samplesPtr,
-    samplesPtr,
+    samplesLeftPtr,
+    samplesRightPtr,
     nsamples,
     codedPtr,
     coded.length,
   );
-  // const data = new Uint8Array(Instance.HEAP8.buffer, codedPtr, ret);
-  const mp3 = new Uint8Array(Instance.HEAP8.buffer, codedPtr, ret);
 
-  // const mp3 = data.subarray(0, data.length);
+  const mp3 = new Uint8Array(Instance.HEAP8.buffer, codedPtr, ret);
 
   postMessage({ type: FINISH_JOB, payload: mp3 }, [mp3.buffer]);
 }
