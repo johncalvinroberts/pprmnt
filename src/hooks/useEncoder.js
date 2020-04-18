@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import useAudioContext from './useAudioContext';
 
 import { MESSAGE_TYPES } from '../constants';
-import { delay } from '../utils';
+import { delay, forceDownload } from '../utils';
 
 const { INIT, CREATE_JOB, FINISH_JOB, CLEANUP } = MESSAGE_TYPES;
 
@@ -25,7 +25,8 @@ export default () => {
         setIsReady(true);
         break;
       case FINISH_JOB:
-        setData(data);
+        const blob = new Blob([data], { type: 'audio/mpeg' });
+        setData(blob);
         break;
       default:
         break;
@@ -46,9 +47,9 @@ export default () => {
       if (!rawFile || !rawFile[0]) {
         return;
       }
-      const payload = await decodeAudioDataToUInt8Array(rawFile[0]);
+      const [payload, meta] = await decodeAudioDataToUInt8Array(rawFile[0]);
 
-      worker.postMessage({ type: CREATE_JOB, payload });
+      worker.postMessage({ type: CREATE_JOB, payload, meta });
     },
     [decodeAudioDataToUInt8Array, error, isReady, worker],
   );
@@ -65,6 +66,12 @@ export default () => {
       workerRef.current.terminate();
     };
   }, [handleMessage, worker]);
+
+  useEffect(() => {
+    if (data) {
+      forceDownload(data);
+    }
+  }, [data]);
 
   return { error, worker, add };
 };
