@@ -22,6 +22,7 @@ const App = () => {
     >
       <input
         {...getInputProps()}
+        accept="audio/*"
         css={css`
           flex: 1;
           padding: 32px;
