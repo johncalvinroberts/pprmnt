@@ -9,13 +9,13 @@
     "start": "parcel serve src/index.html"
   },
   "dependencies": {
+    "@calme1709/id3-js": "^1.0.5",
     "@emotion/core": "^10.0.28",
-    "add": "^2.0.6",
+    "mp3tag.js": "^1.4.0",
     "react": ">=16.3.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "^10.2.2",
-    "react-snap": "^1.23.0",
-    "yarn": "^1.22.4"
+    "react-snap": "^1.23.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
