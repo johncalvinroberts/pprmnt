@@ -10,11 +10,14 @@ const createWorker = () => new Worker('../peppermint.worker.js');
 
 export default () => {
   const [error, setError] = useState(null);
-  const [isReady, setIsReady] = useState(false);
-  const [data, setData] = useState(null);
+  const [isEncoderReady, setIsEncoderReady] = useState(false);
+  const [encoded, setEncoded] = useState(null);
+  const [trackData, setTrackData] = useState(null);
+  const isEncoderReadyRef = useRef(false);
+
   const worker = useMemo(createWorker, []);
 
-  const { decodeAudioData } = useAudioContext();
+  const { decodeAudioData, bundleAudioForDownload } = useAudioContext();
 
   const workerRef = useRef(null);
 
@@ -22,12 +25,11 @@ export default () => {
     if (!data.type) return;
     switch (data.type) {
       case INIT:
-        setIsReady(true);
+        setIsEncoderReady(true);
         break;
       case FINISH_JOB:
         const { payload } = data;
-        const blob = new Blob([payload], { type: 'audio/mpeg' });
-        setData(blob);
+        setEncoded(payload);
         break;
       default:
         break;
@@ -36,7 +38,7 @@ export default () => {
 
   const add = useCallback(
     async (rawFile) => {
-      if (!isReady) {
+      if (!isEncoderReady) {
         await delay(200);
         return add(rawFile);
       }
@@ -48,11 +50,12 @@ export default () => {
       if (!rawFile || !rawFile[0]) {
         return;
       }
-      const [left, right, meta] = await decodeAudioData(rawFile[0]);
-
+      const { name: fileName } = rawFile[0];
+      const [left, right, meta, tags] = await decodeAudioData(rawFile[0]);
+      setTrackData({ meta, fileName, tags });
       worker.postMessage({ type: CREATE_JOB, payload: { left, right }, meta });
     },
-    [decodeAudioData, error, isReady, worker],
+    [decodeAudioData, error, isEncoderReady, worker],
   );
 
   useEffect(() => {
@@ -69,10 +72,21 @@ export default () => {
   }, [handleMessage, worker]);
 
   useEffect(() => {
-    if (data) {
-      forceDownload(data);
+    isEncoderReadyRef.current = isEncoderReady;
+  }, [isEncoderReady]);
+
+  useEffect(() => {
+    const bundleAndDownload = async () => {
+      const { tags, fileName } = trackData;
+      console.log({ tags });
+      const blob = await bundleAudioForDownload({ encoded, tags });
+      forceDownload({ blob, fileName });
+    };
+
+    if (encoded) {
+      bundleAndDownload();
     }
-  }, [data]);
+  }, [bundleAudioForDownload, encoded, trackData]);
 
   return { error, worker, add };
 };

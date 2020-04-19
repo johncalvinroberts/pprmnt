@@ -1445,6 +1445,11 @@ brorand@^1.0.1:
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
   integrity sha1-EsJe/kCkXjwyPrhnWgoM5XsiNx8=
 
+browser-id3-writer@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/browser-id3-writer/-/browser-id3-writer-4.4.0.tgz#1810e86c214da30a1682f8fdf827bf47f7b23372"
+  integrity sha512-8xce9wo4VoKNR4udEGOAf8vndYxhToqQS+1wyrjdYVPQKRc4Wm6xwGG6XrKYgax28y5AvrbCkqK6t1RplPN2Ew==
+
 browser-process-hrtime@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz#3c9b4b7d782c8121e56f10106d84c0d0ffc94626"
@@ -4391,11 +4396,6 @@ mkdirp@^0.5.4:
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   dependencies:
     minimist "^1.2.5"
-
-mp3tag.js@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/mp3tag.js/-/mp3tag.js-1.4.0.tgz#e1863f8ec42672f68ca4df62a00facf061fad0be"
-  integrity sha512-4oK9l/uB8ZMk2i07ssrEq4pbnu39Y/xxfqcAXbchixR8v/4+T3dzJ/8MlkAuM/qNQs6BSQruCtWx4436nM7dyA==
 
 ms@2.0.0:
   version "2.0.0"

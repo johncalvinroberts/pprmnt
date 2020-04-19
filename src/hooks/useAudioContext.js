@@ -1,14 +1,32 @@
 import { useMemo, useCallback } from 'react';
-import MP3Tag from 'mp3tag.js';
+import ID3Writer from 'browser-id3-writer';
+import { parse } from 'id3-parser';
+import { SUPPORTED_TAGS, FRAME_TYPES } from '../constants';
+import { isString, isObject, isNumber } from '../utils';
+
+const validateTag = (tag, value) => {
+  const expectedType = SUPPORTED_TAGS[tag];
+
+  if (!expectedType) return false;
+
+  switch (expectedType) {
+    case 'array':
+      return Array.isArray(value);
+    case 'object':
+      return isObject(value);
+    case 'string':
+      return isString(value);
+    case 'integer':
+      return isNumber(value);
+    default:
+      break;
+  }
+};
 
 const readTags = async (buff) => {
   let tags;
   try {
-    const mp3tag = new MP3Tag(buff);
-    const tagger = mp3tag.read();
-    if (tagger.name === 'ID3v2') {
-      tags = tagger.getFrames();
-    }
+    tags = parse(new Uint8Array(buff));
   } catch (error) {
     tags = {};
   }
@@ -16,20 +34,30 @@ const readTags = async (buff) => {
   return tags;
 };
 
-const writeTags = async (buff, tags) => {
+const writeTagsAndGetBlob = async (uInt8Array, tags) => {
+  const buff = uInt8Array.buffer;
   let ret;
   try {
-    const mp3tag = new MP3Tag(buff);
-    const tagger = mp3tag.read();
-    console.log({ tags });
-    // eslint-disable-next-line no-restricted-syntax
-    for (const tag of tags) {
-      tagger.addFrame(tag);
+    const writer = new ID3Writer(buff);
+
+    // eslint-disable-next-line no-restricted-syntax, prefer-const
+    for (let [key, value] of Object.entries(tags)) {
+      const tag = FRAME_TYPES[key];
+      const isValid = validateTag(tag, value);
+      if (isValid) {
+        try {
+          writer.setFrame(tag, value);
+        } catch (error) {
+          console.log({ error });
+        }
+      }
     }
-    ret = tagger.getAudio();
+    writer.addTag();
+    ret = writer.getBlob();
   } catch (error) {
-    ret = buff;
+    ret = new Blob([uInt8Array], { type: 'audio/mpeg' });
   }
+  return ret;
 };
 
 const initAudioCtx = () =>
@@ -59,5 +87,9 @@ export default () => {
     [audioContext],
   );
 
-  return { audioContext, decodeAudioData };
+  const bundleAudioForDownload = useCallback(({ encoded, tags }) => {
+    return writeTagsAndGetBlob(encoded, tags);
+  }, []);
+
+  return { audioContext, decodeAudioData, bundleAudioForDownload };
 };
