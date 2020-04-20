@@ -5,3 +5,5 @@ export { default as isObject } from './isObject';
 export { default as isNumber } from './isNumber';
 export { default as typedArrayToBuffer } from './typedArrayToBuffer';
 export { default as stripFileExtension } from './stripFileExtension';
+export { default as readTags } from './readTags';
+export { default as writeTags } from './writeTags';

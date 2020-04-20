@@ -51,9 +51,13 @@ export default () => {
       }
       const { name } = rawFile[0];
       const fileName = stripFileExtension(name);
-      const [left, right, meta, tags] = await decodeAudioData(rawFile[0]);
-      setTrackData({ meta, fileName, tags });
-      worker.postMessage({ type: CREATE_JOB, payload: { left, right }, meta });
+      const [left, right, meta] = await decodeAudioData(rawFile[0]);
+      setTrackData({ meta, fileName });
+      worker.postMessage({
+        type: CREATE_JOB,
+        payload: { left, right },
+        meta,
+      });
     },
     [decodeAudioData, error, isEncoderReady, worker],
   );
@@ -77,8 +81,9 @@ export default () => {
 
   useEffect(() => {
     const bundleAndDownload = async () => {
-      const { tags, fileName } = trackData;
-      const blob = await bundleAudioForDownload({ encoded, tags });
+      const { fileName } = trackData;
+
+      const blob = new Blob([encoded], { type: 'audio/mpeg' });
       forceDownload({ blob, fileName });
     };
 

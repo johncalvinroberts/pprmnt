@@ -38,7 +38,7 @@ function encode(
   throw new Error('Encoding MP3 failed');
 }
 
-function buildMp3(payload, meta) {
+async function buildMp3(payload, meta) {
   // sample rate, length passed from audio context meta
   const { sampleRate, length: nsamples } = meta;
   const { left, right } = payload;
@@ -66,7 +66,6 @@ function buildMp3(payload, meta) {
   samplesRight.set(right);
 
   const coded = new Uint8Array(Instance.HEAPF32.buffer, codedPtr);
-  // encode
   const [data, length] = encode(
     encoder,
     samplesLeftPtr,
@@ -87,6 +86,7 @@ function buildMp3(payload, meta) {
    */
 
   postMessage({ type: FINISH_JOB, payload: mp3 }, [mp3.buffer]);
+
   cleanup(encoder, samplesLeftPtr, samplesRightPtr, codedPtr);
 }
 
