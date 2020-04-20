@@ -1,8 +1,7 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import useAudioContext from './useAudioContext';
-
 import { MESSAGE_TYPES } from '../constants';
-import { delay, forceDownload } from '../utils';
+import { delay, forceDownload, stripFileExtension } from '../utils';
 
 const { INIT, CREATE_JOB, FINISH_JOB, CLEANUP } = MESSAGE_TYPES;
 
@@ -50,7 +49,8 @@ export default () => {
       if (!rawFile || !rawFile[0]) {
         return;
       }
-      const { name: fileName } = rawFile[0];
+      const { name } = rawFile[0];
+      const fileName = stripFileExtension(name);
       const [left, right, meta, tags] = await decodeAudioData(rawFile[0]);
       setTrackData({ meta, fileName, tags });
       worker.postMessage({ type: CREATE_JOB, payload: { left, right }, meta });
@@ -78,7 +78,6 @@ export default () => {
   useEffect(() => {
     const bundleAndDownload = async () => {
       const { tags, fileName } = trackData;
-      console.log({ tags });
       const blob = await bundleAudioForDownload({ encoded, tags });
       forceDownload({ blob, fileName });
     };

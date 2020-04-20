@@ -7,13 +7,38 @@ const { CREATE_JOB, CLEANUP, FINISH_JOB, INIT } = MESSAGE_TYPES;
 const channels = 2;
 const bitRate = 320; // up to 320 kbps
 
+// need to instantiate global wasm "Module"
 const Instance = Module();
 
+// let main thread know when init'd
 Instance.onRuntimeInitialized = () => {
   postMessage({ type: INIT });
 };
 
-function encode(payload, meta) {
+function encode(
+  encoder,
+  samplesLeftPtr,
+  samplesRightPtr,
+  nsamples,
+  codedPtr,
+  coded,
+) {
+  const ret = Instance._eencode(
+    encoder,
+    samplesLeftPtr,
+    samplesRightPtr,
+    nsamples,
+    codedPtr,
+    coded.length,
+  );
+  if (ret > 0) {
+    const data = new Uint8Array(Instance.HEAP8.buffer, codedPtr, ret);
+    return [data, ret];
+  }
+  throw new Error('Encoding MP3 failed');
+}
+
+function buildMp3(payload, meta) {
   // sample rate, length passed from audio context meta
   const { sampleRate, length: nsamples } = meta;
   const { left, right } = payload;
@@ -41,15 +66,17 @@ function encode(payload, meta) {
   samplesRight.set(right);
 
   const coded = new Uint8Array(Instance.HEAPF32.buffer, codedPtr);
-
-  const ret = Instance._eencode(
+  // encode
+  const [data, length] = encode(
     encoder,
     samplesLeftPtr,
     samplesRightPtr,
     nsamples,
     codedPtr,
-    coded.length,
+    coded,
   );
+
+  const mp3 = data.subarray(0, length);
 
   /**
    * return value is an int
@@ -59,13 +86,8 @@ function encode(payload, meta) {
    * return code will be number of bytes output in mp3buffer.
    */
 
-  if (ret > 0) {
-    const mp3 = new Uint8Array(Instance.HEAP8.buffer, codedPtr, ret);
-    postMessage({ type: FINISH_JOB, payload: mp3 }, [mp3.buffer]);
-    cleanup(encoder, samplesLeftPtr, samplesRightPtr, codedPtr);
-  } else {
-    throw new Error('Encoding MP3 failed');
-  }
+  postMessage({ type: FINISH_JOB, payload: mp3 }, [mp3.buffer]);
+  cleanup(encoder, samplesLeftPtr, samplesRightPtr, codedPtr);
 }
 
 function cleanup(encoder, samplesLeftPtr, samplesRightPtr, codedPtr) {
@@ -79,7 +101,7 @@ onmessage = ({ data }) => {
   const { type, payload, meta } = data;
   switch (type) {
     case CREATE_JOB:
-      encode(payload, meta);
+      buildMp3(payload, meta);
       break;
     case CLEANUP:
       cleanup();
