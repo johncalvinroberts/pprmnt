@@ -2,7 +2,7 @@ import { useMemo, useCallback } from 'react';
 import ID3Writer from 'browser-id3-writer';
 import { parse } from 'id3-parser';
 import { SUPPORTED_TAGS, FRAME_TYPES } from '../constants';
-import { isString, isObject, isNumber } from '../utils';
+import { isString, isObject, isNumber, typedArrayToBuffer } from '../utils';
 
 const validateTag = (tag, value) => {
   const expectedType = SUPPORTED_TAGS[tag];
@@ -23,19 +23,8 @@ const validateTag = (tag, value) => {
   }
 };
 
-const readTags = async (buff) => {
-  let tags;
-  try {
-    tags = parse(new Uint8Array(buff));
-  } catch (error) {
-    tags = {};
-  }
-
-  return tags;
-};
-
 const writeTagsAndGetBlob = async (uInt8Array, tags) => {
-  const buff = uInt8Array.buffer;
+  const buff = typedArrayToBuffer(uInt8Array);
   let ret;
   try {
     const writer = new ID3Writer(buff);
@@ -48,7 +37,7 @@ const writeTagsAndGetBlob = async (uInt8Array, tags) => {
         try {
           writer.setFrame(tag, value);
         } catch (error) {
-          console.log({ error });
+          console.debug(error);
         }
       }
     }
@@ -58,6 +47,17 @@ const writeTagsAndGetBlob = async (uInt8Array, tags) => {
     ret = new Blob([uInt8Array], { type: 'audio/mpeg' });
   }
   return ret;
+};
+
+const readTags = async (buff) => {
+  let tags;
+  try {
+    tags = parse(new Uint8Array(buff));
+  } catch (error) {
+    tags = {};
+  }
+
+  return tags;
 };
 
 const initAudioCtx = () =>
