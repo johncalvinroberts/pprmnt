@@ -1,4 +1,4 @@
-const forceDownload = async ({ blob, fileName = 'noname' }) => {
+const forceDownload = async ({ blob, fileName }) => {
   // create an element on the document manually and trigger download
   const blobUrl = window.URL.createObjectURL(blob);
   const el = document.createElement('a');
