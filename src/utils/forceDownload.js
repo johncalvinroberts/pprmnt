@@ -1,5 +1,9 @@
-const forceDownload = async ({ blob, fileName }) => {
+const fallbackTitle = 'Untitled track';
+const forceDownload = ({ blob, fileName = fallbackTitle, ext }) => {
   // create an element on the document manually and trigger download
+  if (!fileName.endsWith(ext)) {
+    fileName = `${fileName}${ext}`;
+  }
   const blobUrl = window.URL.createObjectURL(blob);
   const el = document.createElement('a');
   el.download = fileName;

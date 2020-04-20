@@ -109,3 +109,10 @@ export const FRAME_TYPES = {
   'involved-people-list': 'IPLS',
   ownership: 'OWNE',
 };
+
+export const LOAD_STATUS = {
+  INITIAL: 'INITIAL',
+  PENDING: 'PENDING',
+  OK: 'OK',
+  ERROR: 'ERROR',
+};
