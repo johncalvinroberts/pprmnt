@@ -1,7 +1,8 @@
 /** @jsx jsx */
-import { jsx, Styled } from 'theme-ui';
+import { jsx } from 'theme-ui';
 import { useDropzone } from 'react-dropzone';
 import { useJobs } from './JobsContext';
+import { headerOuterRef } from './Header';
 
 const PlaceToDropFiles = () => {
   const { add } = useJobs();
@@ -11,23 +12,22 @@ const PlaceToDropFiles = () => {
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const headerHeight =
+    headerOuterRef.current && headerOuterRef.current.clientHeight;
+
   return (
     <div
       sx={{
-        minHeight: '100vh',
         position: 'sticky',
         px: 4,
         py: 1,
-
         display: 'grid',
-        gridTemplateRows: 'auto 1fr auto',
+        gridTemplateRows: '1fr auto',
         gridColumn: '1',
+        top: headerHeight,
+        maxHeight: `calc(100vh - ${headerHeight}px)`,
       }}
     >
-      <header>
-        <Styled.h1>peppermint.</Styled.h1>
-        <h3>A simple, secure mp3 encoder in your browser.</h3>
-      </header>
       <div
         {...getRootProps()}
         sx={{
@@ -44,13 +44,11 @@ const PlaceToDropFiles = () => {
         }}
       >
         <input {...getInputProps()} accept="audio/*" />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <p>
-            Drag and drop audio files here, or click anywhere to select files
-          </p>
-        )}
+        <p sx={{ p: [4, 0], textAlign: ['center', 'inherit'] }}>
+          {isDragActive
+            ? 'Drop the files here ..'
+            : 'Drag and drop audio files here, or click anywhere to select files'}
+        </p>
       </div>
       <footer
         sx={{

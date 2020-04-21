@@ -1,19 +1,21 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import Theme from './Theme';
+import Theme, { RootGrid } from './Theme';
 import JobsContext from './JobsContext';
 import JobsList from './JobsList';
 import PlaceToDropFiles from './PlaceToDropFiles';
+import Header from './Header';
 
-const App = () => {
+export default () => {
   return (
     <Theme>
       <JobsContext>
-        <PlaceToDropFiles />
-        <JobsList />
+        <RootGrid>
+          <Header />
+          <PlaceToDropFiles />
+          <JobsList />
+        </RootGrid>
       </JobsContext>
     </Theme>
   );
 };
-
-export default App;
