@@ -13,7 +13,7 @@ export default () => {
   const [error, setError] = useState(null);
   const [isEncoderReady, setIsEncoderReady] = useState(false);
   const [encoded, setEncoded] = useState(null);
-  const [trackData, setTrackData] = useState(null);
+  const [trackData, setTrackData] = useState({ fileName: '', meta: {} });
   const [loadStatus, setLoadStatus] = useState(INITIAL);
   const isEncoderReadyRef = useRef(false);
 
@@ -31,6 +31,7 @@ export default () => {
         break;
       case FINISH_JOB:
         const { payload } = data;
+        workerRef.current.terminate();
         setLoadStatus(OK);
         setEncoded(payload);
         break;
@@ -39,32 +40,24 @@ export default () => {
     }
   }, []);
 
-  const handleError = useCallback((error) => {
-    setError(error);
-    setLoadStatus(ERROR);
-  }, []);
-
-  const add = useCallback(
+  const encode = useCallback(
     async (rawFile) => {
-      if (error) {
-        return;
-      }
-
-      if (!rawFile || !rawFile[0]) {
+      if (error || !rawFile) {
         return;
       }
 
       setLoadStatus(PENDING);
-
-      if (!isEncoderReady) {
+      if (!isEncoderReadyRef.current) {
         await delay(200);
-        return add(rawFile);
+
+        return encode(rawFile);
       }
 
       try {
-        const { name } = rawFile[0];
+        const { name } = rawFile;
         const fileName = stripFileExtension(name);
-        const [left, right, meta] = await decodeAudioData(rawFile[0]);
+        const [left, right, meta] = await decodeAudioData(rawFile);
+
         setTrackData({ meta, fileName });
         worker.postMessage({
           type: CREATE_JOB,
@@ -72,14 +65,23 @@ export default () => {
           meta,
         });
       } catch (error) {
-        handleError(error);
+        setError(error);
       }
     },
-    [decodeAudioData, error, handleError, isEncoderReady, worker],
+    [decodeAudioData, error, worker],
   );
+
+  const download = useCallback(() => {
+    if (!encoded) return;
+    const { fileName } = trackData;
+    const blob = new Blob([encoded], { type: 'audio/mpeg' });
+    forceDownload({ blob, fileName, ext: '.mp3' });
+  }, [encoded, trackData]);
 
   // effects
   useEffect(() => {
+    const handleError = (error) => setError(error);
+
     workerRef.current = worker;
     worker.onmessageerror = handleError;
 
@@ -90,19 +92,15 @@ export default () => {
       worker.postMessage({ type: CLEANUP });
       workerRef.current.terminate();
     };
-  }, [handleError, handleMessage, worker]);
+  }, [handleMessage, worker]);
 
   useEffect(() => {
     isEncoderReadyRef.current = isEncoderReady;
   }, [isEncoderReady]);
 
   useEffect(() => {
-    if (encoded) {
-      const { fileName } = trackData;
-      const blob = new Blob([encoded], { type: 'audio/mpeg' });
-      forceDownload({ blob, fileName, ext: '.mp3' });
-    }
-  }, [encoded, trackData]);
+    if (error) setLoadStatus(ERROR);
+  }, [error]);
 
-  return { error, worker, add, loadStatus };
+  return { error, worker, encode, loadStatus, download, trackData };
 };

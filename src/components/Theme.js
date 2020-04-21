@@ -13,6 +13,7 @@ export const theme = {
     purple: 'hsl(290, 100%, 80%)',
     muted: 'hsla(230, 20%, 0%, 20%)',
     gray: 'hsl(210, 50%, 60%)',
+    error: '#ff4c4c',
   },
   fonts: {
     body:
@@ -56,7 +57,7 @@ export const theme = {
     },
     h1: {
       variant: 'textStyles.display',
-      fontSize: 10,
+      // fontSize: 10,
     },
     h2: {
       variant: 'textStyles.heading',
@@ -101,33 +102,6 @@ export const theme = {
       color: 'secondary',
       fontSize: 1,
     },
-    inlineCode: {
-      fontFamily: 'monospace',
-      color: 'secondary',
-      bg: 'muted',
-    },
-    table: {
-      width: '100%',
-      my: 4,
-      borderCollapse: 'separate',
-      borderSpacing: 0,
-      'th,td': {
-        textAlign: 'left',
-        py: '4px',
-        pr: '4px',
-        pl: 0,
-        borderColor: 'muted',
-        borderBottomStyle: 'solid',
-      },
-    },
-    th: {
-      verticalAlign: 'bottom',
-      borderBottomWidth: '2px',
-    },
-    td: {
-      verticalAlign: 'top',
-      borderBottomWidth: '1px',
-    },
     hr: {
       border: 0,
       borderBottom: '1px solid',
@@ -147,7 +121,9 @@ export const RootGrid = (props) => (
       lineHeight: 'body',
       display: 'grid',
       gridAutoColumns: [null, null, '1fr 1fr'],
+      gridAutoRows: 'auto 1fr',
       maxWidth: `1240px`,
+      minHeight: '100vh',
     })}
   />
 );
@@ -178,6 +154,6 @@ export default ({ children }) => (
         },
       }}
     />
-    <RootGrid>{children}</RootGrid>
+    {children}
   </ThemeProvider>
 );
