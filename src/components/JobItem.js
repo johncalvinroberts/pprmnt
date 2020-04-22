@@ -12,48 +12,42 @@ import { truncateText } from '../utils';
 
 const { INITIAL, PENDING, OK } = LOAD_STATUS;
 
-const FileNameAnimate = ({ children }) => (
+const FileName = ({ fileName }) => (
   <AnimatePresence>
-    <motion.div
-      animate={{ opacity: 1 }}
-      initial={{ opacity: 0 }}
-      transition={{
-        opacity: { duration: 0.2 },
-      }}
-      exit={{ opacity: 0 }}
-    >
-      {children}
-    </motion.div>
+    {fileName && (
+      <motion.div
+        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0 }}
+        transition={{
+          opacity: { duration: 0.3 },
+          scale: 0.3,
+        }}
+        exit={{ opacity: 0 }}
+      >
+        {fileName}
+      </motion.div>
+    )}
+    {!fileName && (
+      <motion.div
+        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0 }}
+        transition={{
+          opacity: { duration: 0.3 },
+          scale: 0.3,
+        }}
+        exit={{ opacity: 0, scale: 0 }}
+      >
+        <div
+          sx={{
+            bg: 'highlight',
+            height: '10px',
+            borderRadius: '2px',
+            width: '120px',
+          }}
+        />
+      </motion.div>
+    )}
   </AnimatePresence>
-);
-
-const FileNamePlaceholder = () => (
-  <FileNameAnimate>
-    <div
-      sx={{
-        bg: 'highlight',
-        height: '10px',
-        borderRadius: '2px',
-        width: '120px',
-      }}
-    />
-  </FileNameAnimate>
-);
-
-const FileName = ({ children }) => (
-  <FileNameAnimate>
-    <div
-      sx={{
-        pl: 1,
-        maxWidth: ['120px', '240px', '300px'],
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-      }}
-    >
-      {children}
-    </div>
-  </FileNameAnimate>
 );
 
 const AnimateIn = ({ isVisible, children }) => (
@@ -92,9 +86,9 @@ const JobItem = ({ id, file }) => {
     <div
       sx={{
         py: 3,
-        px: 2,
+        px: [2, 4, 2],
         pr: 4,
-        maxWidth: '600px',
+        maxWidth: [null, null, '600px'],
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
@@ -105,7 +99,7 @@ const JobItem = ({ id, file }) => {
     >
       <div sx={{ px: 1 }}>{hhmmss(duration)} - </div>
       <div>
-        {!fileName ? <FileNamePlaceholder /> : <FileName>{fileName}</FileName>}
+        <FileName fileName={fileName} />
       </div>
       <div sx={{ display: 'flex', flex: '1', justifyContent: 'flex-end' }}>
         <AnimateIn isVisible={loadStatus === PENDING}>

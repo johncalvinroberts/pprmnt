@@ -1,7 +1,9 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import useAudioContext from './useAudioContext';
 import { MESSAGE_TYPES, LOAD_STATUS } from '../constants';
-import { delay, forceDownload, stripFileExtension } from '../utils';
+import { delay, forceDownload, stripFileExtension, logger } from '../utils';
+
+const log = logger('useEncoder', 'aquamarine');
 
 const { INIT, CREATE_JOB, FINISH_JOB, CLEANUP } = MESSAGE_TYPES;
 
@@ -24,18 +26,24 @@ export default () => {
   const workerRef = useRef(null);
 
   const handleMessage = useCallback(({ data }) => {
+    log('received message');
     if (!data.type) return;
     switch (data.type) {
       case INIT:
+        log('Encoder initialized');
         setIsEncoderReady(true);
         break;
       case FINISH_JOB:
         const { payload } = data;
+        log('Received encoded binary from worker');
+        log(data);
+        log('Terminating worker', 'warn');
         workerRef.current.terminate();
         setLoadStatus(OK);
         setEncoded(payload);
         break;
       default:
+        log('Unknown message received from worker');
         break;
     }
   }, []);
@@ -43,28 +51,39 @@ export default () => {
   const encode = useCallback(
     async (rawFile) => {
       if (error || !rawFile) {
+        log('no file provided, bailing', 'warn');
         return;
       }
 
       setLoadStatus(PENDING);
       if (!isEncoderReadyRef.current) {
+        log(
+          'encoder is initializing, waiting 200ms and calling recursively',
+          'warn',
+        );
         await delay(200);
-
         return encode(rawFile);
       }
 
       try {
         const { name } = rawFile;
         const fileName = stripFileExtension(name);
+        log(
+          `Stripping file extension, original: ${name}, stripped: ${fileName}`,
+        );
         const [left, right, meta] = await decodeAudioData(rawFile);
 
         setTrackData({ meta, fileName });
+        log({ meta, fileName });
+        log('Posting PCM data and meta CREATE_JOB to worker');
         worker.postMessage({
           type: CREATE_JOB,
           payload: { left, right },
           meta,
         });
+        log('Posted message');
       } catch (error) {
+        log(error, 'error');
         setError(error);
       }
     },
@@ -89,8 +108,12 @@ export default () => {
 
     worker.onmessage = handleMessage;
     return () => {
+      log('Cleaning up');
       worker.postMessage({ type: CLEANUP });
-      workerRef.current.terminate();
+      if (workerRef.current) {
+        log('Terminating worker', 'warn');
+        workerRef.current.terminate();
+      }
     };
   }, [handleMessage, worker]);
 
@@ -99,7 +122,10 @@ export default () => {
   }, [isEncoderReady]);
 
   useEffect(() => {
-    if (error) setLoadStatus(ERROR);
+    if (error) {
+      log(error, 'error');
+      setLoadStatus(ERROR);
+    }
   }, [error]);
 
   return { error, worker, encode, loadStatus, download, trackData };

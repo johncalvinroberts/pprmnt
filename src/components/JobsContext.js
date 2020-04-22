@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
-import { generateUuid } from '../utils';
+import { generateUuid, logger } from '../utils';
+
+const log = logger('JobsContext', 'tomato');
 
 const JobsContext = createContext();
 
@@ -10,8 +12,11 @@ const Jobs = ({ children }) => {
 
   const add = useCallback(
     (files) => {
+      log('adding jobs');
       const jobsToAdd = files.map((file) => {
         const id = generateUuid();
+        log(`adding job ${id}`);
+        log(file);
         return { id, file };
       });
 
@@ -23,6 +28,7 @@ const Jobs = ({ children }) => {
 
   const remove = useCallback(
     (id) => {
+      log(`removing job ${id}`);
       const nextJobs = jobs.filter((item) => item.id !== id);
       setJobs(nextJobs);
     },
