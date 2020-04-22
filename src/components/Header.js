@@ -19,6 +19,8 @@ export default () => {
         px: 4,
         py: 1,
         top: 0,
+        zIndex: [99, 99, null],
+        bg: ['background', 'background', 'transparent'],
       }}
       ref={headerRef}
     >

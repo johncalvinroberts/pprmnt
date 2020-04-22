@@ -10,3 +10,5 @@ export { default as writeTags } from './writeTags';
 export { default as fileToArrayBuffer } from './fileToArrayBuffer';
 export { default as generateUuid } from './generateUuid';
 export { default as truncateText } from './truncateText';
+export { default as logger } from './logger';
+export { timer } from './logger';

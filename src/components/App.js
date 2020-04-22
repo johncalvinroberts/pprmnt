@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 import Theme, { RootGrid } from './Theme';
 import JobsContext from './JobsContext';
 import JobsList from './JobsList';
-import PlaceToDropFiles from './PlaceToDropFiles';
+import DropZone from './DropZone';
 import Header from './Header';
 
 export default () => {
@@ -12,7 +12,7 @@ export default () => {
       <JobsContext>
         <RootGrid>
           <Header />
-          <PlaceToDropFiles />
+          <DropZone />
           <JobsList />
         </RootGrid>
       </JobsContext>

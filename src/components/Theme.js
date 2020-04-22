@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { ThemeProvider, jsx } from 'theme-ui';
 import { Global } from '@emotion/core';
-import css from '@styled-system/css';
 
 export const theme = {
   colors: {
@@ -116,15 +115,15 @@ export const theme = {
 export const RootGrid = (props) => (
   <div
     {...props}
-    css={css({
+    sx={{
       fontFamily: 'body',
       lineHeight: 'body',
       display: 'grid',
-      gridAutoColumns: [null, null, '1fr 1fr'],
-      gridAutoRows: 'auto 1fr',
+      gridTemplateColumns: ['1fr', '1fr', '1fr 1fr'],
+      gridTemplateRows: 'auto 1fr',
       maxWidth: `1240px`,
       minHeight: '100vh',
-    })}
+    }}
   />
 );
 
@@ -132,12 +131,12 @@ export const RootGrid = (props) => (
 export const Heading = (props) => (
   <h1
     {...props}
-    css={css({
+    sx={{
       fontFamily: 'heading',
       lineHeight: 'heading',
       fontSize: [4, 5],
       m: 0,
-    })}
+    }}
   />
 );
 

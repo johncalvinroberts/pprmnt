@@ -8,7 +8,7 @@ const JobsList = () => {
   const { jobs } = useJobs();
   if (!jobs.length) return null;
   return (
-    <div sx={{ gridColumn: '2' }}>
+    <div sx={{ gridColumn: ['1 / span 2', '1 / span 2', '2'] }}>
       {jobs.map((item) => (
         <AnimatePresence key={item.id}>
           <motion.div
