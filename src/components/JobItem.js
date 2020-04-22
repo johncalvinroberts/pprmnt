@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useEffect } from 'react';
-import { jsx, Spinner, Close } from 'theme-ui';
+import { jsx, Close } from 'theme-ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import hhmmss from 'hhmmss';
 import { useEncoder } from '../hooks';
@@ -8,6 +8,7 @@ import { LOAD_STATUS } from '../constants';
 import { useJobs } from './JobsContext';
 import { Down } from './SVG';
 import Button from './Button';
+import Loader from './Loader';
 import { truncateText } from '../utils';
 
 const { INITIAL, PENDING, OK } = LOAD_STATUS;
@@ -101,10 +102,26 @@ const JobItem = ({ id, file }) => {
       <div>
         <FileName fileName={fileName} />
       </div>
-      <div sx={{ display: 'flex', flex: '1', justifyContent: 'flex-end' }}>
-        <AnimateIn isVisible={loadStatus === PENDING}>
-          <Spinner size={32} />
-        </AnimateIn>
+      <div
+        sx={{
+          display: 'flex',
+          flex: '1',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+      >
+        {loadStatus === PENDING && (
+          <div
+            sx={{
+              px: 2,
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}
+          >
+            status: {loadStatus} <Loader sx={{ pl: 2 }} />
+          </div>
+        )}
         <AnimateIn isVisible={loadStatus === OK}>
           <Button onClick={download} title="download">
             <Down /> <span sx={{ pl: 2 }}>Download</span>

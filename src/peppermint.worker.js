@@ -67,6 +67,7 @@ async function buildMp3(payload, meta) {
      */
     log('Allocating memory for left, right PCM data, and encoded');
     const codedPtr = Instance._malloc(1.25 * nsamples + 7200);
+
     // additionally, we allocate pointers for both left and right channels
     const samplesLeftPtr = Instance._malloc(nsamples * 4);
     const samplesRightPtr = Instance._malloc(nsamples * 4);
@@ -94,7 +95,7 @@ async function buildMp3(payload, meta) {
     log('Encode success');
     log({ data, length });
 
-    const mp3 = data.subarray(0, length);
+    const mp3 = new Uint8Array(data.subarray(0, length));
     /**
      * return value is an int
      *
