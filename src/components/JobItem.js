@@ -1,74 +1,16 @@
 /** @jsx jsx */
 import { useEffect } from 'react';
-import { jsx, Close } from 'theme-ui';
-import { motion, AnimatePresence } from 'framer-motion';
+import { jsx } from 'theme-ui';
 import hhmmss from 'hhmmss';
 import { useEncoder } from '../hooks';
 import { LOAD_STATUS } from '../constants';
 import { useJobs } from './JobsContext';
 import { Down } from './SVG';
-import Button from './Button';
+import Button, { CloseButton } from './Button';
 import Loader from './Loader';
 import { truncateText } from '../utils';
 
 const { INITIAL, PENDING, OK } = LOAD_STATUS;
-
-const FileName = ({ fileName }) => (
-  <AnimatePresence>
-    {fileName && (
-      <motion.div
-        animate={{ opacity: 1, scale: 1 }}
-        initial={{ opacity: 0, scale: 0 }}
-        transition={{
-          opacity: { duration: 0.3 },
-          scale: 0.3,
-        }}
-        exit={{ opacity: 0 }}
-      >
-        {fileName}
-      </motion.div>
-    )}
-    {!fileName && (
-      <motion.div
-        animate={{ opacity: 1, scale: 1 }}
-        initial={{ opacity: 0, scale: 0 }}
-        transition={{
-          opacity: { duration: 0.3 },
-          scale: 0.3,
-        }}
-        exit={{ opacity: 0, scale: 0 }}
-      >
-        <div
-          sx={{
-            bg: 'highlight',
-            height: '10px',
-            borderRadius: '2px',
-            width: '120px',
-          }}
-        />
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
-
-const AnimateIn = ({ isVisible, children }) => (
-  <AnimatePresence>
-    {isVisible && (
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{
-          scale: { type: 'spring', stiffness: 300, damping: 200 },
-          opacity: { duration: 0.2 },
-        }}
-        exit={{ opacity: 0, scale: 0 }}
-        sx={{ pl: 2 }}
-      >
-        {children}
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
 
 const JobItem = ({ id, file }) => {
   const { encode, error, loadStatus, download, trackData } = useEncoder();
@@ -100,7 +42,16 @@ const JobItem = ({ id, file }) => {
     >
       <div sx={{ px: 1 }}>{hhmmss(duration)} - </div>
       <div>
-        <FileName fileName={fileName} />
+        {fileName || (
+          <div
+            sx={{
+              bg: 'highlight',
+              height: '10px',
+              borderRadius: '2px',
+              width: '120px',
+            }}
+          />
+        )}
       </div>
       <div
         sx={{
@@ -122,17 +73,15 @@ const JobItem = ({ id, file }) => {
             status: {loadStatus} <Loader sx={{ pl: 2 }} />
           </div>
         )}
-        <AnimateIn isVisible={loadStatus === OK}>
+        {loadStatus === OK && (
           <Button onClick={download} title="download">
             <Down /> <span sx={{ pl: 2 }}>Download</span>
           </Button>
-        </AnimateIn>
+        )}
         <span sx={{ pl: 2 }}>
-          <Close
+          <CloseButton
             onClick={handleRemove}
             sx={{
-              cursor: 'pointer',
-              borderRadius: '0',
               '&:hover': { bg: 'highlight' },
               ':focus': {
                 outline: 0,
