@@ -16,8 +16,7 @@
     "react": ">=16.3.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "^10.2.2",
-    "react-snap": "^1.23.0",
-    "theme-ui": "^0.3.1"
+    "react-snap": "^1.23.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

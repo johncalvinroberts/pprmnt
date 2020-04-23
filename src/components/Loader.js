@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import { jsx, css } from '@emotion/core';
 import { useState } from 'react';
 import { useInterval } from '../hooks';
 
@@ -29,22 +29,22 @@ export default (props) => {
   return (
     <div {...props}>
       <div
-        sx={{
-          position: 'relative',
-          display: 'flex',
-          width: '20px',
-          height: '20px',
-          flexWrap: 'wrap',
-        }}
+        css={css`
+          position: relative;
+          display: flex;
+          width: 20px;
+          height: 20px;
+          flex-wrap: wrap;
+        `}
       >
         {colors.map((background) => (
           <span
             key={background}
             style={{ background }}
-            sx={{
-              width: '10px',
-              height: '10px',
-            }}
+            css={css`
+              width: 10px;
+              height: 10px;
+            `}
           />
         ))}
       </div>

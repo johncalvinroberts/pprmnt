@@ -7,6 +7,7 @@
     "react/button-has-type": "off",
     "import/no-cycle": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/jsx-fragments": "off",
     "no-case-declarations": "off",
     "import/extensions": "off",
     "no-shadow": "off",
