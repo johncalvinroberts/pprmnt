@@ -4,18 +4,15 @@ import { Global, css, jsx } from '@emotion/core';
 
 const varify = (obj) => Object.keys(obj).map((key) => `--${key}: ${obj[key]};`);
 
-export const breakpoints = {
-  xs: () => ``,
-  sm: () => ``,
-  md: () => ``,
-  lg: () => ``,
-};
+const breakpoints = [576, 768, 992, 1200];
+
+export const mq = breakpoints.map((bp) => `@media (max-width: ${bp}px)`);
 
 export const theme = {
   colors: {
-    background: `hsla(0, 1%, 10%, 0.95)`,
+    // background: `hsla(0, 1%, 10%, 0.95)`,
+    background: `#252424`,
     muted: `hsla(0, 1%, 10%, 1)`,
-    highlight: `hsla(155, 67%, 73%, 0.5)`,
     error: `#ff4c4c`,
     text: `hsl(210, 50%, 96%)`,
   },
@@ -67,29 +64,11 @@ const globalStyles = css`
   }
 
   body {
-    overflow: hidden;
-    transition: background 1.5s;
-    background: var(--background);
+    background-color: var(--background);
     font-family: ${theme.fonts.body};
     font-size: var(--med);
   }
 `;
-
-export const RootGrid = (props) => (
-  <div
-    {...props}
-    css={css`
-      font-family: ${theme.fonts.body};
-      color: var(--text);
-      line-height: ${theme.lineHeights.body};
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto 1fr;
-      max-width: 1240px;
-      min-height: 100vh;
-    `}
-  />
-);
 
 export default ({ children }) => (
   <Fragment>

@@ -9,7 +9,7 @@ const JobsList = () => {
   return (
     <div
       css={css`
-        grid-column: 2;
+        /* grid-column: 2; */
         /* should be 1/ span 2 on mobile */
       `}
     >

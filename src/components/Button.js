@@ -1,9 +1,11 @@
 /** @jsx jsx */
+import { forwardRef } from 'react';
 import { jsx, css } from '@emotion/core';
 import { Close } from './SVG';
 
-const ButtonBase = ({ children, ...rest }) => (
+const ButtonBase = forwardRef(({ children, ...rest }, ref) => (
   <button
+    ref={ref}
     css={css`
       appearance: none;
       color: inherit;
@@ -30,10 +32,10 @@ const ButtonBase = ({ children, ...rest }) => (
   >
     {children}
   </button>
-);
+));
 
-const Button = ({ children, title, ...rest }) => (
-  <ButtonBase title={title} {...rest}>
+const Button = forwardRef(({ children, title, ...rest }, ref) => (
+  <ButtonBase title={title} {...rest} ref={ref}>
     <div
       css={css`
         display: flex;
@@ -44,7 +46,7 @@ const Button = ({ children, title, ...rest }) => (
       {children}
     </div>
   </ButtonBase>
-);
+));
 
 export const CloseButton = ({ size = `32px`, ...props }) => (
   <ButtonBase
