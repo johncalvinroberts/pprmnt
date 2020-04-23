@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import { jsx } from '@emotion/core';
 
 const SVG = ({ size = 24, ...props }) => (
   <svg
