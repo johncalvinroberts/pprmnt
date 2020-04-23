@@ -14,10 +14,11 @@ export default () => {
   return (
     <header
       css={css`
-        background: var(--transparent);
+        background: var(--background);
         position: sticky;
         padding: var(--smol) var(--xlrg);
-        grid-column: 1 / span 2;
+        /* grid-column: 1 / span 2; */
+        grid-column: 1;
         top: 0;
         z-index: 99;
       `}
