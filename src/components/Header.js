@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useRef, useEffect } from 'react';
-import { jsx, Styled } from 'theme-ui';
+import { jsx, css } from '@emotion/core';
 
 export const headerOuterRef = { current: null };
 
@@ -13,19 +13,18 @@ export default () => {
 
   return (
     <header
-      sx={{
-        gridColumn: '1 / span 2',
-        position: 'sticky',
-        px: 4,
-        py: 1,
-        top: 0,
-        zIndex: [99, 99, null],
-        bg: ['background', 'background', 'transparent'],
-      }}
+      css={css`
+        background: var(--transparent);
+        position: sticky;
+        padding: var(--smol) var(--xlrg);
+        grid-column: 1 / span 2;
+        top: 0;
+        z-index: 99;
+      `}
       ref={headerRef}
     >
-      <Styled.h1>peppermint.</Styled.h1>
-      <Styled.h3>A simple, secure mp3 encoder in your browser.</Styled.h3>
+      <h1>ppprmnt.</h1>
+      <h3>A simple, secure mp3 encoder in your browser.</h3>
     </header>
   );
 };

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import { css, jsx } from '@emotion/core';
 import { useDropzone } from 'react-dropzone';
 import { useJobs } from './JobsContext';
 import { headerOuterRef } from './Header';
@@ -7,7 +7,7 @@ import { logger } from '../utils';
 
 const log = logger('DropZone', 'deeppink');
 
-const PlaceToDropFiles = () => {
+const DropZone = () => {
   const { add } = useJobs();
 
   const onDrop = (acceptedFiles) => {
@@ -21,53 +21,58 @@ const PlaceToDropFiles = () => {
 
   return (
     <div
-      sx={{
-        position: 'sticky',
-        px: 4,
-        py: 1,
-        display: 'grid',
-        gridTemplateRows: '1fr auto',
-        gridColumn: ['1 / span 2', '1 / span 2', '1'],
-        top: headerHeight,
-        maxHeight: `calc(100vh - ${headerHeight}px)`,
-        zIndex: 99,
-        bg: 'background',
-      }}
+      css={css`
+        position: sticky;
+        padding: var(--smol) var(--xlrg) var(--smol) var(--xlrg);
+        display: grid;
+        grid-template-rows: 1fr auto;
+        grid-column: 1;
+        top: ${headerHeight || 172};
+        max-height: calc(100vh - 130px);
+        z-index: 99;
+      `}
     >
       <div
         {...getRootProps()}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          borderColor: 'muted',
-
-          border: 'solid 1px',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          bg: isDragActive ? 'highlight' : '',
-          ':hover': {
-            color: 'primary',
-          },
-        }}
+        css={css`
+          display: flex;
+          align-items: center;
+          border-color: var(--muted);
+          border: solid 1px;
+          justify-content: center;
+          cursor: pointer;
+        `}
       >
         <input {...getInputProps()} accept="audio/*" />
-        <p sx={{ p: [4, 2, 2, 0], textAlign: ['center', 'inherit'] }}>
+        <p
+          css={css`
+            padding: var(--smol);
+            text-align: center;
+          `}
+        >
           {isDragActive
             ? 'Drop the files here ..'
             : 'Drag and drop audio files here, or click anywhere to select files'}
         </p>
       </div>
       <footer
-        sx={{
-          height: '40px',
-          display: 'flex',
-          justifyContent: 'flex-start',
-        }}
+        css={css`
+          height: 40px;
+          display: flex;
+          justify-content: flex-start;
+        `}
       >
-        <span sx={{ fontSize: 1, py: 2 }}>© {new Date().getFullYear()}</span>
+        <span
+          css={css`
+            font-size: var(--smol);
+            padding: var(--smol);
+          `}
+        >
+          © {new Date().getFullYear()}
+        </span>
       </footer>
     </div>
   );
 };
 
-export default PlaceToDropFiles;
+export default DropZone;

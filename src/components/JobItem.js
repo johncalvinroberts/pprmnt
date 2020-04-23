@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useEffect } from 'react';
-import { jsx } from 'theme-ui';
+import { jsx, css } from '@emotion/core';
 import hhmmss from 'hhmmss';
 import { useEncoder } from '../hooks';
 import { LOAD_STATUS } from '../constants';
@@ -11,6 +11,12 @@ import Loader from './Loader';
 import { truncateText } from '../utils';
 
 const { INITIAL, PENDING, OK } = LOAD_STATUS;
+
+const placeholder = css`
+  background: var(--muted);
+  height: 10px;
+  width: 120px;
+`;
 
 const JobItem = ({ id, file }) => {
   const { encode, error, loadStatus, download, trackData } = useEncoder();
@@ -27,73 +33,88 @@ const JobItem = ({ id, file }) => {
 
   return (
     <div
-      sx={{
-        py: 3,
-        px: [2, 4, 2],
-        pr: 4,
-        maxWidth: [null, null, '600px'],
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        '&:hover': {
-          bg: 'muted',
-        },
-      }}
+      css={css`
+        padding: var(--smol);
+        padding-right: var(--lrg);
+        max-width: 600px; /* should be unset on mobile */
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        &:hover {
+          background: var(--muted);
+        }
+      `}
     >
-      <div sx={{ px: 1 }}>{hhmmss(duration)} - </div>
-      <div>
-        {fileName || (
-          <div
-            sx={{
-              bg: 'highlight',
-              height: '10px',
-              borderRadius: '2px',
-              width: '120px',
-            }}
-          />
-        )}
+      <div
+        css={css`
+          padding: 0 var(--smol);
+        `}
+      >
+        {hhmmss(duration)} -{' '}
       </div>
       <div
-        sx={{
-          display: 'flex',
-          flex: '1',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-        }}
+        css={css`
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+          max-width: 200px;
+          white-space: nowrap;
+        `}
+      >
+        {fileName || <div css={placeholder} />}
+      </div>
+      <div
+        css={css`
+          display: flex;
+          flex: 1;
+          justify-content: flex-end;
+          align-items: center;
+        `}
       >
         {loadStatus === PENDING && (
           <div
-            sx={{
-              px: 2,
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-            }}
+            css={css`
+              padding: 0 var(--med);
+              justify-content: flex-end;
+              align-items: center;
+              display: flex;
+            `}
           >
-            status: {loadStatus} <Loader sx={{ pl: 2 }} />
+            status: {loadStatus}{' '}
+            <Loader
+              css={css`
+                padding-left: var(--smol);
+              `}
+            />
           </div>
         )}
         {loadStatus === OK && (
           <Button onClick={download} title="download">
-            <Down /> <span sx={{ pl: 2 }}>Download</span>
+            <Down />{' '}
+            <span
+              css={css`
+                padding-left: var(--smol);
+              `}
+            >
+              Download
+            </span>
           </Button>
         )}
-        <span sx={{ pl: 2 }}>
-          <CloseButton
-            onClick={handleRemove}
-            sx={{
-              '&:hover': { bg: 'highlight' },
-              ':focus': {
-                outline: 0,
-                boxShadow: '0 0 0 2px',
-              },
-            }}
-          />
-        </span>
+        <CloseButton
+          onClick={handleRemove}
+          css={css`
+            padding-left: var(--smol);
+          `}
+        />
       </div>
 
       {error && (
-        <div sx={{ bg: 'error', flex: '0 0 100%' }}>
+        <div
+          css={css`
+            background: var(--error);
+            flex: 0 0 100%;
+          `}
+        >
           {truncateText(error.message) ||
             'Failed to encode this audio file, for some reason 🥴'}
         </div>
