@@ -1,8 +1,19 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useInterval } from '../hooks';
 
-const shuffle = (arr) => [arr.pop(), ...arr];
+export const shuffle = (array) => {
+  // eslint-disable-next-line
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+};
+
 const initialColors = [
   '#FF008C',
   'hsl(260, 100%, 80%)',
@@ -13,9 +24,7 @@ const initialColors = [
 export default (props) => {
   const [colors, setColors] = useState(initialColors);
 
-  useEffect(() => {
-    setTimeout(() => setColors(shuffle([...colors])), 500);
-  }, [colors]);
+  useInterval(() => setColors(shuffle([...colors])), 500);
 
   return (
     <div {...props}>

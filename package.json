@@ -9,8 +9,8 @@
     "start": "parcel serve src/index.html"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.28",
     "browser-id3-writer": "^4.4.0",
-    "framer-motion": "^1.10.3",
     "hhmmss": "^1.0.0",
     "id3-parser": "^2.0.0",
     "react": ">=16.3.0",

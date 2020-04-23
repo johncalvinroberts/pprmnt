@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import { StrictMode } from 'react';
 import { jsx } from '@emotion/core';
 import Theme, { RootGrid } from './Theme';
 import JobsContext from './JobsContext';
@@ -8,14 +9,16 @@ import Header from './Header';
 
 export default () => {
   return (
-    <Theme>
-      <JobsContext>
-        <RootGrid>
-          <Header />
-          <DropZone />
-          <JobsList />
-        </RootGrid>
-      </JobsContext>
-    </Theme>
+    <StrictMode>
+      <Theme>
+        <JobsContext>
+          <RootGrid>
+            <Header />
+            <DropZone />
+            <JobsList />
+          </RootGrid>
+        </JobsContext>
+      </Theme>
+    </StrictMode>
   );
 };

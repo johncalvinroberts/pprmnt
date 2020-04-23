@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
+import { Close } from './SVG';
 
-export default ({ children, title, ...rest }) => (
+const Button = ({ children, title, ...rest }) => (
   <button
     title={title}
     sx={{
@@ -36,3 +37,27 @@ export default ({ children, title, ...rest }) => (
     </div>
   </button>
 );
+
+export const CloseButton = ({ size = 32, ...props }) => (
+  <button
+    {...props}
+    sx={{
+      appearance: 'none',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 1,
+      width: size,
+      height: size,
+      color: 'inherit',
+      bg: 'transparent',
+      border: 'none',
+      borderRadius: 0,
+      cursor: 'pointer',
+    }}
+  >
+    <Close />
+  </button>
+);
+
+export default Button;
