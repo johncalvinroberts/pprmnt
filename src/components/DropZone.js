@@ -1,43 +1,12 @@
 /** @jsx jsx */
-import { forwardRef } from 'react';
 import { css, jsx } from '@emotion/core';
 import { useDropzone } from 'react-dropzone';
 import { useJobs } from './JobsContext';
 import { logger } from '../utils';
-import Button from './Button';
 import { Up } from './SVG';
 import Flex from './Flex';
-import { mq } from './Theme';
 
 const log = logger('DropZone', 'deeppink');
-
-const UPLOAD_BTN_ID = 'upload-btn';
-
-const UploadButton = forwardRef((props, ref) => (
-  <Button
-    {...props}
-    ref={ref}
-    css={css`
-      position: sticky;
-      top: 86px;
-      background: var(--background);
-      z-index: 99;
-      ${mq[0]} {
-        top: 110px;
-      }
-    `}
-    id={UPLOAD_BTN_ID}
-  >
-    <Up />{' '}
-    <span
-      css={css`
-        padding-left: var(--smol);
-      `}
-    >
-      Select files
-    </span>
-  </Button>
-));
 
 const Placeholder = ({ isDragActive }) => (
   <Flex
@@ -67,7 +36,7 @@ const DropZone = ({ children }) => {
     add(acceptedFiles);
   };
 
-  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     noClick: !isEmpty,
   });
@@ -75,7 +44,6 @@ const DropZone = ({ children }) => {
   return (
     <div {...getRootProps()}>
       {isEmpty && <Placeholder isDragActive={isDragActive} />}
-      {!isEmpty && <UploadButton onClick={open} />}
       {children}
       <input {...getInputProps()} accept="audio/*" />
       {isDragActive && (

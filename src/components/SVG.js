@@ -30,4 +30,17 @@ export const Close = (props) => (
   </SVG>
 );
 
+export const Color = (props) => (
+  <SVG {...props}>
+    <circle
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentcolor"
+      strokeWidth="2"
+      fill="none"
+    />
+  </SVG>
+);
+
 export default SVG;

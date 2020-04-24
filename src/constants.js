@@ -116,3 +116,4 @@ export const LOAD_STATUS = {
   OK: 'OK',
   ERROR: 'ERROR',
 };
+export const COLOR_MODE_KEY = 'pprmntcolormode';
