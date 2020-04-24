@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { Link } from './Button';
 
 export default () => (
   <footer
@@ -11,15 +12,22 @@ export default () => (
       position: sticky;
       bottom: 0;
       background: var(--background);
+      font-size: var(--smol);
+      padding: var(--smol);
     `}
   >
     <span
       css={css`
-        font-size: var(--smol);
-        padding: var(--smol);
+        padding-right: var(--smol);
       `}
     >
       © {new Date().getFullYear()}
+    </span>
+    <span>
+      <Link href="/privacy">privacy</Link>
+    </span>
+    <span>
+      <Link href="/about">about</Link>
     </span>
   </footer>
 );
