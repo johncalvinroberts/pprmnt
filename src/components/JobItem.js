@@ -9,6 +9,7 @@ import { Down } from './SVG';
 import Button, { CloseButton } from './Button';
 import Loader from './Loader';
 import { truncateText } from '../utils';
+import Flex from './Flex';
 
 const { INITIAL, PENDING, OK } = LOAD_STATUS;
 
@@ -32,14 +33,12 @@ const JobItem = ({ id, file }) => {
   }, [encode, file, loadStatus]);
 
   return (
-    <div
+    <Flex
       css={css`
         padding: var(--smol);
         padding-right: var(--lrg);
         max-width: 600px; /* should be unset on mobile */
-        display: flex;
         flex-wrap: wrap;
-        align-items: center;
         &:hover {
           background: var(--muted);
         }
@@ -63,21 +62,16 @@ const JobItem = ({ id, file }) => {
       >
         {fileName || <div css={placeholder} />}
       </div>
-      <div
+      <Flex
         css={css`
-          display: flex;
           flex: 1;
           justify-content: flex-end;
-          align-items: center;
         `}
       >
         {loadStatus === PENDING && (
-          <div
+          <Flex
             css={css`
               padding: 0 var(--med);
-              justify-content: flex-end;
-              align-items: center;
-              display: flex;
             `}
           >
             status: {loadStatus}{' '}
@@ -86,7 +80,7 @@ const JobItem = ({ id, file }) => {
                 padding-left: var(--smol);
               `}
             />
-          </div>
+          </Flex>
         )}
         {loadStatus === OK && (
           <Button onClick={download} title="download">
@@ -106,7 +100,7 @@ const JobItem = ({ id, file }) => {
             padding-left: var(--smol);
           `}
         />
-      </div>
+      </Flex>
 
       {error && (
         <div
@@ -119,7 +113,7 @@ const JobItem = ({ id, file }) => {
             'Failed to encode this audio file, for some reason 🥴'}
         </div>
       )}
-    </div>
+    </Flex>
   );
 };
 

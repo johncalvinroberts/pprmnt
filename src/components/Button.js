@@ -2,6 +2,7 @@
 import { forwardRef } from 'react';
 import { jsx, css } from '@emotion/core';
 import { Close } from './SVG';
+import Flex from './Flex';
 
 const ButtonBase = forwardRef(({ children, ...rest }, ref) => (
   <button
@@ -36,15 +37,7 @@ const ButtonBase = forwardRef(({ children, ...rest }, ref) => (
 
 const Button = forwardRef(({ children, title, ...rest }, ref) => (
   <ButtonBase title={title} {...rest} ref={ref}>
-    <div
-      css={css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      `}
-    >
-      {children}
-    </div>
+    <Flex>{children}</Flex>
   </ButtonBase>
 ));
 
