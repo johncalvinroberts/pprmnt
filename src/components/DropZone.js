@@ -52,7 +52,7 @@ const DropZone = ({ children }) => {
             background-color: var(--text);
             border: solid 1px;
             cursor: pointer;
-            position: absolute;
+            position: fixed;
             z-index: 999;
             left: 0;
             right: 0;

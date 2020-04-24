@@ -1,39 +1,42 @@
 /** @jsx jsx */
 import { forwardRef } from 'react';
+import { Link as RouterLink } from 'wouter';
 import { jsx, css } from '@emotion/core';
 import { Close } from './SVG';
 import Flex from './Flex';
 
-const ButtonBase = forwardRef(({ children, ...rest }, ref) => (
-  <button
-    ref={ref}
-    css={css`
-      appearance: none;
-      color: inherit;
-      background-color: transparent;
-      padding-left: 8px;
-      padding-right: 8px;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      margin: 0;
-      font-family: inherit;
-      font-size: inherit;
-      cursor: pointer;
-      border: 0;
-      &:focus {
-        box-shadow: 0 0 0 2px;
-        outline: 0;
-      }
-      &:hover {
-        background: var(--text);
-        color: var(--background);
-      }
-    `}
-    {...rest}
-  >
-    {children}
-  </button>
-));
+const ButtonBase = forwardRef(
+  ({ children, Component = 'button', ...rest }, ref) => (
+    <Component
+      ref={ref}
+      css={css`
+        appearance: none;
+        color: inherit;
+        background-color: transparent;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        cursor: pointer;
+        border: 0;
+        &:focus {
+          box-shadow: 0 0 0 2px;
+          outline: 0;
+        }
+        &:hover {
+          background: var(--text);
+          color: var(--background);
+        }
+      `}
+      {...rest}
+    >
+      {children}
+    </Component>
+  ),
+);
 
 const Button = forwardRef(({ children, title, ...rest }, ref) => (
   <ButtonBase title={title} {...rest} ref={ref}>
@@ -60,5 +63,7 @@ export const CloseButton = ({ size = `32px`, ...props }) => (
     <Close />
   </ButtonBase>
 );
+
+export const Link = (props) => <ButtonBase Component={RouterLink} {...props} />;
 
 export default Button;

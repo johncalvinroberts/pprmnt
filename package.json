@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "parcel build src/index.html",
+    "prebuild": "make clean-build",
+    "build": "parcel build src/index.html --no-cache",
     "postbuild": "react-snap",
     "start": "parcel serve src/index.html"
   },
@@ -16,7 +17,9 @@
     "react": ">=16.3.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "^10.2.2",
-    "react-snap": "^1.23.0"
+    "react-snap": "^1.23.0",
+    "use-deep-compare-effect": "^1.3.1",
+    "wouter": "^2.4.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
