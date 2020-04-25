@@ -1,12 +1,14 @@
 {
-  "name": "sssrpbp",
+  "name": "peppermint",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "repository": "https://github.com/johncalvinroberts/peppermint",
+  "author": "John Roberts",
   "scripts": {
     "prebuild": "make clean-build",
-    "build": "parcel build src/index.html --no-cache",
-    "postbuild": "react-snap",
+    "build": "parcel build --no-cache --no-content-hash src/index.html",
+    "//postbuild": "react-snap",
     "start": "parcel serve src/index.html"
   },
   "dependencies": {

@@ -11,10 +11,12 @@
     "no-case-declarations": "off",
     "import/extensions": "off",
     "no-shadow": "off",
-    "no-alert": "error"
+    "no-alert": "error",
+    "no-restricted-globals": "off"
   },
   "globals": {
     "importScripts": true,
-    "Module": true
+    "Module": true,
+    "self": true
   }
 }
