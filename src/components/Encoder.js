@@ -21,6 +21,9 @@ export default () => {
       'twitter:description': {
         content: descriptionContent,
       },
+      keywords: {
+        content: 'converter, mp3, wav, transcode, encoder',
+      },
     },
   });
   return (
