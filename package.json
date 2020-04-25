@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "parcel build src/index.html",
+    "prebuild": "make clean-build",
+    "build": "parcel build src/index.html --no-cache",
     "postbuild": "react-snap",
     "start": "parcel serve src/index.html"
   },
