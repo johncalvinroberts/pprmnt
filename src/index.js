@@ -4,10 +4,10 @@ import App from './components/App';
 import { logger } from './utils';
 
 const log = logger('index', '#3e3240');
+const isDesktop = process.env.DESKTOP;
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
-(async () => {
+// declare function for mounting service worker
+const mountServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
     try {
       const sw = await navigator.serviceWorker.register('./service-worker.js', {
@@ -20,4 +20,16 @@ ReactDOM.render(<App />, document.getElementById('root'));
       log(error);
     }
   }
-})();
+};
+
+// reset the history to '/' if on desktop app, otherwise it will be "index.html"
+if (isDesktop) {
+  history.pushState({}, '', '/');
+}
+
+// mount react app
+ReactDOM.render(<App />, document.getElementById('root'));
+
+if (process.env.NODE_ENV === 'production' && !isDesktop) {
+  mountServiceWorker();
+}

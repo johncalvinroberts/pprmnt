@@ -7,13 +7,17 @@
   "author": "John Roberts",
   "scripts": {
     "prebuild": "make clean-build",
-    "build": "parcel build --no-cache --no-content-hash src/index.html",
-    "//postbuild": "react-snap",
-    "start": "parcel serve src/index.html"
+    "build": "yarn build-web",
+    "postbuild": "react-snap",
+    "build-web": "parcel build --no-cache --no-content-hash src/index.html",
+    "build-desktop": "cross-env DESKTOP=true yarn build-web && yarn start-desktop",
+    "start": "parcel serve src/index.html",
+    "start-desktop":"deskgap ./desktop"
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "browser-id3-writer": "^4.4.0",
+    "deskgap": "^0.2.0",
     "hhmmss": "^1.0.0",
     "id3-parser": "^2.0.0",
     "react": ">=16.3.0",
@@ -24,6 +28,7 @@
     "wouter": "^2.4.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",    
     "eslint": "^6.8.0",
     "eslint-config-wcl-frontend": "^1.0.11",
     "parcel": "latest",
