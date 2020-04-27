@@ -2,7 +2,7 @@
   "name": "peppermint",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "repository": "https://github.com/johncalvinroberts/peppermint",
   "author": "John Roberts",
   "scripts": {
