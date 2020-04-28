@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "make clean-build",
     "build": "parcel build --no-cache --no-content-hash src/index.html",
-    "//postbuild": "react-snap",
+    "postbuild": "react-snap",
     "start": "parcel serve src/index.html"
   },
   "dependencies": {

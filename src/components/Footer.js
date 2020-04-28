@@ -14,6 +14,7 @@ export default () => (
       background: var(--background);
       font-size: var(--smol);
       padding: var(--smol);
+      padding-left: var(--xlrg);
     `}
   >
     <span

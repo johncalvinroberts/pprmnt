@@ -51,7 +51,9 @@ export default () => {
       css={css`
         background: var(--background);
         position: sticky;
-        padding: var(--smol) var(--xlrg);
+        padding-left: var(--xlrg);
+        padding-right: var(--xlrg);
+        padding-bottom: var(--smol);
         padding-top: 0;
         grid-column: 1;
         top: 0;
