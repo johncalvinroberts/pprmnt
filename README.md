@@ -13,7 +13,9 @@ First, why do I need this: I'm a beatmaker, I make beats. When I send beats to o
 
 Secondly, why might other people need this: Musicians are often in a similar situation, needing to send a quick MP3 instead of a huge WAV file. Musicians often seek out easy-to-use online "convert to MP3 online" websites -- websites which **require upload to a remote server**. They perform the MP3 encoding on the backend, not on the client. 
 
-Basically: musicians are exposing their private intellectual property to these seedy websites, just to get an MP3 version of their audio. I thought some musicians might prefer a tool that converts their audio securely, locally on their machine, without exposing it to a sketchy third-party server.
+Basically: musicians are exposing their private intellectual property to these seedy websites, just to get an MP3 version of their audio. 
+
+I thought some musicians might prefer a tool that converts their audio securely, locally on their machine, without exposing it to a sketchy third-party server.
 
 ## How does it work?
 
