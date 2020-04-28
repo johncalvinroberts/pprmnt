@@ -2,10 +2,10 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/f1cd5962-35b0-409a-8621-4cfca36bbdef/deploy-status)](https://app.netlify.com/sites/musing-yalow-be7560/deploys)
 
-A secure MP3 encoder, powered by Web Assembly. [try it](https://pprmnt.cc)
+A secure MP3 encoder, powered by Web Assembly. [Try it out.](https://pprmnt.cc)
 
 
-![peppermint screenshot](https://user-images.githubusercontent.com/11850362/80461688-3eb6e880-8968-11ea-94b6-12c338a3ffdc.png)
+![pprmnt screenshot](https://user-images.githubusercontent.com/11850362/80504529-cff88000-89a5-11ea-8276-0508e54084db.png)
 
 ## Why do we need this?
 
@@ -48,8 +48,9 @@ It's a cool way to spell "peppermint".
 
 ### Forthcoming features
 * Transcoder options (bitrate, vbr, etc.)
-* Support for other audio codecs as encoding target. Currently, decoding should be working with a variety of source formats, not just wav. It's `conver to x format` that will be a bit more difficult.
+* Support for other audio codecs as encoding target. Currently, decoding should be working with a variety of source formats, not just wav. It's `convert to x format` that will be a bit more difficult.
 * Tray app
+* Support for id3 tags, which I attempted already, [found out it's a complete nightmare](https://blog.codinghorror.com/a-spec-tacular-failure/)
 * Convert to [preact](https://preactjs.com/guide/v10/hooks) + [framework agnostic emotion](https://www.notion.so/johnnynchyah/pprmnt-todo-a585e4c4c3da463fa351a44f8374aa44#29063fd25ec743ab88d1374fe20d853f) for lighter bundle size. Currently, it's a 120+ kb chad bundle pretending to be a minimalist hipster bundle.
 
 ### Contributing

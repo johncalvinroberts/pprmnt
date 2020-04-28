@@ -23,8 +23,8 @@ const JobItem = ({ id, file }) => {
   const { encode, error, loadStatus, download, trackData } = useEncoder();
 
   const { remove } = useJobs();
-
-  const { fileName, meta } = trackData;
+  const { name: fileName } = file;
+  const { meta } = trackData;
   const { duration } = meta;
   const handleRemove = () => remove(id);
 

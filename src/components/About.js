@@ -69,9 +69,16 @@ const Privacy = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          here on github
+          here on Github
         </a>{' '}
-        for your viewing enjoyment .
+        for your viewing enjoyment.
+      </p>
+      <p>
+        There are also more technical details about how {name} works, the
+        limitations, and future roadmap for features in the readme on Github.
+      </p>
+      <p>
+        Any other questions about {name} can be addressed to: johnny@johnny.sh
       </p>
     </Content>
   );

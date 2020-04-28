@@ -107,12 +107,14 @@ const getInitialColorMode = () => {
 
 export default ({ children }) => {
   const [colorMode, setColorMode] = useState(getInitialColorMode());
+
   const toggleColorMode = useCallback(() => {
     const { light, dark } = modes;
     const nextColorMode = colorMode === dark ? light : dark;
 
     setColorMode(nextColorMode);
   }, [colorMode]);
+
   useEffect(() => {
     setColorMode(colorMode);
     localStorage.setItem(COLOR_MODE_KEY, colorMode);
