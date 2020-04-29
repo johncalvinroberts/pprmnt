@@ -1,4 +1,4 @@
-const cacheName = 'pprmnt-1.0.6';
+const cacheName = 'pprmnt-1.0.0'; // need to manually update this to bust cache
 
 const thingsToCache = [
   '/',
@@ -23,14 +23,15 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   self.clients.claim();
-  event.waitUntil(() => {
-    // do cleanup of stale cache
-    return Promise.all(
-      caches
-        .keys()
-        .map((key) => (key !== cacheName ? caches.delete(key) : null)),
-    );
-  });
+  // do cleanup of stale cache
+  event.waitUntil(
+    (async () => {
+      const promises = (await caches.keys()).map((maybeStale) =>
+        maybeStale !== cacheName ? caches.delete(maybeStale) : null,
+      );
+      await Promise.all(promises);
+    })(),
+  );
 });
 
 self.addEventListener('fetch', (e) => {
