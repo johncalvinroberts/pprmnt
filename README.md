@@ -5,7 +5,7 @@
 A secure MP3 encoder, powered by Web Assembly. [Try it out.](https://pprmnt.cc)
 
 
-![pprmnt screenshot](https://user-images.githubusercontent.com/11850362/80504529-cff88000-89a5-11ea-8276-0508e54084db.png)
+![pprmnt screenshot](https://user-images.githubusercontent.com/11850362/80697526-a9545980-8b0b-11ea-9944-5cdb3dd58f18.png)
 
 ## Why do we need this?
 

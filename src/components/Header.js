@@ -109,6 +109,7 @@ export default () => {
           flex-wrap: wrap;
           justify-content: flex-start;
           font-size: var(--smol);
+          padding-bottom: var(--med);
         `}
       >
         <UploadButton />
@@ -116,7 +117,7 @@ export default () => {
         <BitRateSelector />
         <VbrMethodSelector />
       </Flex>
-      <h1>ppprmnt.</h1>
+      <h1>pprmnt.</h1>
       <h3>A secure mp3 encoder in your browser.</h3>
     </header>
   );
