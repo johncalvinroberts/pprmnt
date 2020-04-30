@@ -35,7 +35,18 @@ const Privacy = () => {
         Convert your lossless audio to MP3 for better portability, without
         sacrificing the privacy and security of your intellectual property.
       </p>
-      <h4>The problem</h4>
+      <h3>The use case</h3>
+      <p>
+        When musicians or sound artists need to share audio files, or upload
+        them somewhere, they often need to first convert them to MP3. The
+        lossless WAV version that the DAW software exports is often way too big
+        to send easily, and can cause performance issues when uploading online.
+      </p>
+      <p>
+        Sometimes it's easier to send a quick MP3, instead of a huge WAV or FLAC
+        audio file.
+      </p>
+      <h3>The problem</h3>
       <p>
         Many "file conversion" websites are harvesting your data. They upload
         your lossless audio to a server, convert it there, and then send it back
@@ -51,7 +62,7 @@ const Privacy = () => {
         taking that audio, licensing it...and eventually taking legal action{' '}
         <strong>against you.</strong>
       </p>
-      <h4>The solution</h4>
+      <h3>The solution</h3>
       <p>
         {name} takes a different approach, by converting the audio directly in
         your browser, without ever even leaving your machine. Your audio is
