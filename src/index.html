@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href="https://pprmnt.cc" />
     <!-- manifest -->
     <link rel="manifest" href="./manifest.webmanifest" />
     <link href="./assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -70,7 +71,7 @@
     <script src="./index.js"></script>
     <!-- fathom analytics -->
     <script>
-      if (window.env === 'production' && navigator.userAgent !== 'ReactSnap') {
+      if (window.__MOUNT_FATHOM) {
         (function (f, a, t, h, o, m) {
           a[h] =
             a[h] ||
@@ -89,5 +90,6 @@
         fathom('trackPageview');
       }
     </script>
+    <!-- end fathom -->
   </body>
 </html>

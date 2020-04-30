@@ -116,4 +116,27 @@ export const LOAD_STATUS = {
   OK: 'OK',
   ERROR: 'ERROR',
 };
+
 export const COLOR_MODE_KEY = 'pprmntcolormode';
+
+export const BIT_RATE_KEY = 'pprmntbitrate';
+
+export const BIT_RATE_CHOICES = [
+  6,
+  8,
+  12,
+  16,
+  24,
+  32,
+  48,
+  56,
+  64,
+  96,
+  112,
+  128,
+  160,
+  192,
+  224,
+  256,
+  320,
+];

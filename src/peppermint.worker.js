@@ -4,7 +4,9 @@ import { logger } from './utils';
 // config
 const { CREATE_JOB, CLEANUP, FINISH_JOB, INIT } = MESSAGE_TYPES;
 const channels = 2;
-const bitRate = 320; // up to 320 kbps
+const defaultOptions = {
+  bitRate: 320,
+};
 
 // set up the worker
 const log = logger('peppermint.worker', 'springgreen');
@@ -48,12 +50,13 @@ function encode(
   throw new Error('Encoding MP3 failed');
 }
 
-async function buildMp3(payload, meta) {
+async function buildMp3(payload, meta, options = defaultOptions) {
   log('buildMp3');
   try {
     // sample rate, length passed from audio context meta
     const { sampleRate, length: nsamples } = meta;
     const { left, right } = payload;
+    const { bitRate } = options;
     // initialize encoder
     log('Creating encoder');
     const encoder = Instance._encoder_create(sampleRate, channels, bitRate);
@@ -125,10 +128,12 @@ function cleanup(encoder, samplesLeftPtr, samplesRightPtr, codedPtr) {
 onmessage = ({ data }) => {
   log('Received message');
   log({ data });
-  const { type, payload, meta } = data;
+  const { type, payload, meta, options } = data;
+  log(JSON.stringify(options));
   switch (type) {
     case CREATE_JOB:
-      buildMp3(payload, meta);
+      log(options);
+      buildMp3(payload, meta, options);
       break;
     case CLEANUP:
       cleanup();

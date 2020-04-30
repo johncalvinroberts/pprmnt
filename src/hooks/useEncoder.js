@@ -48,8 +48,9 @@ export default () => {
     }
   }, []);
 
+  // encode -- main function for sending the request to encode to the worker
   const encode = useCallback(
-    async (rawFile) => {
+    async (rawFile, bitRate) => {
       if (error || !rawFile) {
         log('no file provided, bailing', 'warn');
         return;
@@ -62,7 +63,7 @@ export default () => {
           'warn',
         );
         await delay(200);
-        return encode(rawFile);
+        return encode(rawFile, bitRate);
       }
 
       try {
@@ -72,14 +73,15 @@ export default () => {
           `Stripping file extension, original: ${name}, stripped: ${fileName}`,
         );
         const [left, right, meta] = await decodeAudioData(rawFile);
-
+        const options = { bitRate };
         setTrackData({ meta, fileName });
-        log({ meta, fileName });
+        log({ meta, fileName, options });
         log('Posting PCM data and meta CREATE_JOB to worker');
         worker.postMessage({
           type: CREATE_JOB,
           payload: { left, right },
           meta,
+          options,
         });
         log('Posted message');
       } catch (error) {
@@ -99,14 +101,15 @@ export default () => {
 
   // effects
   useEffect(() => {
-    const handleError = (error) => setError(error);
-
+    // set workerRef
     workerRef.current = worker;
+    // error handler -- define here, not as a useCallback
+    const handleError = (error) => setError(error);
+    // worker event handlers
     worker.onmessageerror = handleError;
-
     worker.onerror = handleError;
-
     worker.onmessage = handleMessage;
+
     return () => {
       log('Cleaning up');
       worker.postMessage({ type: CLEANUP });

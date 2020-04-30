@@ -22,15 +22,15 @@ const placeholder = css`
 const JobItem = ({ id, file }) => {
   const { encode, error, loadStatus, download, trackData } = useEncoder();
 
-  const { remove } = useJobs();
+  const { remove, bitRate } = useJobs();
   const { name: fileName } = file;
   const { meta } = trackData;
   const { duration } = meta;
   const handleRemove = () => remove(id);
 
   useEffect(() => {
-    if (loadStatus === INITIAL) encode(file);
-  }, [encode, file, loadStatus]);
+    if (loadStatus === INITIAL) encode(file, bitRate);
+  }, [bitRate, encode, file, loadStatus]);
 
   return (
     <Flex

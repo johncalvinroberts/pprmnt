@@ -1,7 +1,16 @@
-import React, { createContext, useState, useContext, useCallback } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useCallback,
+  useEffect,
+} from 'react';
 import { generateUuid, logger } from '../utils';
+import { BIT_RATE_KEY } from '../constants';
 
 const log = logger('JobsContext', 'tomato');
+
+const initialBitRate = localStorage.getItem(BIT_RATE_KEY) || 320;
 
 const JobsContext = createContext();
 
@@ -9,6 +18,11 @@ export const useJobs = () => useContext(JobsContext);
 
 const Jobs = ({ children }) => {
   const [jobs, setJobs] = useState([]);
+  const [bitRate, setBitRate] = useState(initialBitRate);
+
+  useEffect(() => {
+    localStorage.setItem(BIT_RATE_KEY, bitRate);
+  }, [bitRate]);
 
   const add = useCallback(
     (files) => {
@@ -36,7 +50,7 @@ const Jobs = ({ children }) => {
   );
 
   return (
-    <JobsContext.Provider value={{ jobs, add, remove }}>
+    <JobsContext.Provider value={{ jobs, add, remove, setBitRate, bitRate }}>
       {children}
     </JobsContext.Provider>
   );

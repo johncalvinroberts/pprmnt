@@ -5,7 +5,7 @@ import { jsx, css } from '@emotion/core';
 import { Close } from './SVG';
 import Flex from './Flex';
 
-const ButtonBase = forwardRef(
+export const ButtonBase = forwardRef(
   ({ children, Component = 'button', ...rest }, ref) => (
     <Component
       ref={ref}
