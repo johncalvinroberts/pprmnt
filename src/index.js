@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import { logger } from './utils';
 
-window.env = process.env.NODE_ENV;
-
 const log = logger('index', '#3e3240');
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -33,4 +31,7 @@ const mountServiceWorker = async () => {
   }
 };
 
-if (isProduction && !isPrerenderPhase) mountServiceWorker();
+if (isProduction && !isPrerenderPhase) {
+  window.__MOUNT_FATHOM = true;
+  mountServiceWorker();
+}

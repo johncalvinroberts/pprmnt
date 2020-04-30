@@ -9,7 +9,8 @@
     "prebuild": "make clean-build",
     "build": "parcel build --no-cache --no-content-hash src/index.html",
     "postbuild": "react-snap",
-    "start": "parcel serve src/index.html"
+    "start": "parcel serve src/index.html",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",

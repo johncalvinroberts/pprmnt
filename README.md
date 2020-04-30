@@ -20,14 +20,12 @@ I thought some musicians might prefer a tool that converts their audio securely,
 ## How does it work?
 
 The underlying tech stack is based on the following:
-* [`liblamemp3`](https://lame.sourceforge.io/), a classic C library for encoding audio to MP3
-* [`emscripten`](https://emscripten.org/) is used to compile `liblamemp3` and C code to Web Assembly.
+* [`libmp3lame`](https://lame.sourceforge.io/), a classic C library for encoding audio to MP3
+* [`emscripten`](https://emscripten.org/) is used to compile `libmp3lame` and C code to Web Assembly.
 * [Web Assembly](https://developer.mozilla.org/en-US/docs/WebAssembly) runs native code on the client, allowing us to do memory-heavy stuff in the browser.
 * All the emscripten web assembly action is done in Docker, for better portability and C lang dependency management.
 * Frontend offloads the web assembly operations to [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker) for better performance.
 * Frontend built with React, Emotion, and Parcel Bundler
-
-By default, **pprmnt** converts the source audio file to 320kbps MP3 using lame's `lame_encode_buffer_ieee_float` method.
 
 ## What else can it do?
 
@@ -47,7 +45,6 @@ It's a cool way to spell "peppermint".
 * Performance -- current state is not optimized for speed, I just wanted to get this thing working. There are lots of areas for improvement. Currently, the slowest operation is [`BaseAudioContext.decodeAudioData()`](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData).
 
 ### Forthcoming features
-* Transcoder options (bitrate, vbr, etc.)
 * Support for other audio codecs as encoding target. Currently, decoding should be working with a variety of source formats, not just wav. It's `convert to x format` that will be a bit more difficult.
 * Tray app
 * Support for id3 tags, which I attempted already, [found out it's a complete nightmare](https://blog.codinghorror.com/a-spec-tacular-failure/)
@@ -63,7 +60,7 @@ If you want to contribute, here's how to get the dev workflow running locally...
 
 #### Commands
 * `make install` - install docker deps and frontend deps
-* `make build-docker` - builds the docker image, the environment for emscripten to run in, compiles `liblamemp3`
+* `make build-docker` - builds the docker image, the environment for emscripten to run in, compiles `libmp3lame`
 * `make build-wasm` - compiles the web assembly + javascript wrapper
 * `yarn start` - run the dev server, open `http://localhost:1234/` to see the app running
 * `yarn build` - build and prerender for prod deployment

@@ -1,6 +1,11 @@
 import hhmmss from 'hhmmss';
 import isObject from './isObject';
 
+const ALL_LEVELS = '*';
+
+const rawLogLevel = process.env.PPRMNT_LOG || ALL_LEVELS;
+const logLevel = rawLogLevel.split(',');
+
 const loggerCache = {};
 
 const getSecondsToday = () => {
@@ -41,6 +46,12 @@ const consoleMethods = {
 const buildLogger = ({ namespace, color }) => {
   const [timestampString, timestampStyle] = getTimeStamp();
   const [namespaceString, namespaceStyle] = getNameSpace(namespace, color);
+
+  const isIncluded =
+    logLevel.includes(ALL_LEVELS) || logLevel.includes(namespace);
+
+  // return noop if not included in loglevel
+  if (!isIncluded) return () => {};
 
   const log = (message, logLevel = 'info') => {
     const logMessageStyle = logMessageLevels[logLevel];
