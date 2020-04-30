@@ -4,11 +4,21 @@ import { useDropzone } from 'react-dropzone';
 import { jsx, css } from '@emotion/core';
 import { Up, Color } from './SVG';
 import { useJobs } from './JobsContext';
-import Button, { ButtonBase } from './Button';
+import Button from './Button';
 import Flex from './Flex';
+import Dropdown from './Dropdown';
 import { useTheme } from './Theme';
 import { logger } from '../utils';
-import { BIT_RATE_CHOICES } from '../constants';
+import { BIT_RATE_CHOICES, VBR_CHOICES } from '../constants';
+
+const bitRateChoices = BIT_RATE_CHOICES.map((item) => ({
+  label: `${item} kbps`,
+  value: item,
+}));
+
+const vbrMethodChoices = Object.keys(VBR_CHOICES).map(
+  (key) => VBR_CHOICES[key],
+);
 
 const log = logger('Header', 'aqua');
 
@@ -55,56 +65,27 @@ const BitRateSelector = () => {
   const { bitRate, setBitRate } = useJobs();
 
   return (
-    <Button
-      css={css`
-        position: relative;
-        height: 20px;
-        ul {
-          display: none;
-        }
-
-        &:hover {
-          ul {
-            display: block;
-          }
-        }
-      `}
+    <Dropdown
       title="toggle bitrate menu"
-      aria-haspopup="true"
       id="bitrate-menu-control"
-    >
-      {bitRate} kbps
-      <ul
-        role="menu"
-        css={css`
-          padding: 0;
-          position: absolute;
-          background: var(--background);
-          z-index: 99;
-          top: 20px;
-          left: 0px;
-          list-style: none;
-          box-shadow: 2px 2px 0px var(--muted);
-        `}
-      >
-        {BIT_RATE_CHOICES.map((item) => (
-          <ButtonBase
-            Component="li"
-            key={item}
-            css={css`
-              width: 200px;
-              color: var(--text);
-              text-align: left;
-            `}
-            role="menuitem"
-            onClick={() => setBitRate(item)}
-            onKeyDown={() => setBitRate(item)}
-          >
-            {item} kbps
-          </ButtonBase>
-        ))}
-      </ul>
-    </Button>
+      label={`${bitRate} kbps`}
+      handleSelect={setBitRate}
+      choices={bitRateChoices}
+    />
+  );
+};
+
+const VbrMethodSelector = () => {
+  const { vbrMethod, setVbrMethod } = useJobs();
+  const { label } = vbrMethodChoices[vbrMethod];
+  return (
+    <Dropdown
+      id="vbr-method-control"
+      title="toggle VBR method menu"
+      label={label}
+      handleSelect={setVbrMethod}
+      choices={vbrMethodChoices}
+    />
   );
 };
 
@@ -133,6 +114,7 @@ export default () => {
         <UploadButton />
         <ColorButton />
         <BitRateSelector />
+        <VbrMethodSelector />
       </Flex>
       <h1>ppprmnt.</h1>
       <h3>A secure mp3 encoder in your browser.</h3>

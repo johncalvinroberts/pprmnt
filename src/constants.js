@@ -118,8 +118,8 @@ export const LOAD_STATUS = {
 };
 
 export const COLOR_MODE_KEY = 'pprmntcolormode';
-
 export const BIT_RATE_KEY = 'pprmntbitrate';
+export const VBR_METHOD_KEY = 'pprmntvbrmethod';
 
 export const BIT_RATE_CHOICES = [
   6,
@@ -140,3 +140,9 @@ export const BIT_RATE_CHOICES = [
   256,
   320,
 ];
+
+export const VBR_CHOICES = {
+  VBR_METHOD_NONE: { value: 0, label: 'Constant Bit Rate' },
+  VBR_METHOD_DEFAULT: { value: 1, label: 'Variable Bit Rate' },
+  VBR_METHOD_ABR: { value: 2, label: 'Average Bit Rate' },
+};

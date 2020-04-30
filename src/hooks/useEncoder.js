@@ -50,7 +50,7 @@ export default () => {
 
   // encode -- main function for sending the request to encode to the worker
   const encode = useCallback(
-    async (rawFile, bitRate) => {
+    async (rawFile, bitRate, vbr) => {
       if (error || !rawFile) {
         log('no file provided, bailing', 'warn');
         return;
@@ -63,7 +63,7 @@ export default () => {
           'warn',
         );
         await delay(200);
-        return encode(rawFile, bitRate);
+        return encode(rawFile, bitRate, vbr);
       }
 
       try {
@@ -73,7 +73,7 @@ export default () => {
           `Stripping file extension, original: ${name}, stripped: ${fileName}`,
         );
         const [left, right, meta] = await decodeAudioData(rawFile);
-        const options = { bitRate };
+        const options = { bitRate, vbr };
         setTrackData({ meta, fileName });
         log({ meta, fileName, options });
         log('Posting PCM data and meta CREATE_JOB to worker');

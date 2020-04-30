@@ -27,8 +27,6 @@ The underlying tech stack is based on the following:
 * Frontend offloads the web assembly operations to [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker) for better performance.
 * Frontend built with React, Emotion, and Parcel Bundler
 
-By default, **pprmnt** converts the source audio file to 320kbps MP3 using lame's `lame_encode_buffer_ieee_float` method.
-
 ## What else can it do?
 
 Not very much.
@@ -47,7 +45,6 @@ It's a cool way to spell "peppermint".
 * Performance -- current state is not optimized for speed, I just wanted to get this thing working. There are lots of areas for improvement. Currently, the slowest operation is [`BaseAudioContext.decodeAudioData()`](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData).
 
 ### Forthcoming features
-* Variable bit rate vs. constant bit rate option
 * Support for other audio codecs as encoding target. Currently, decoding should be working with a variety of source formats, not just wav. It's `convert to x format` that will be a bit more difficult.
 * Tray app
 * Support for id3 tags, which I attempted already, [found out it's a complete nightmare](https://blog.codinghorror.com/a-spec-tacular-failure/)
