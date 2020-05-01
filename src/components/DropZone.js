@@ -13,13 +13,12 @@ const Placeholder = ({ isDragActive }) => (
     css={css`
       height: 100%;
       cursor: pointer;
+      justify-content: flex-start;
+      padding-left: var(--xlrg);
+      padding-right: var(--xlrg);
     `}
   >
-    <p
-      css={css`
-        padding: var(--smol);
-      `}
-    >
+    <p>
       {!isDragActive &&
         'Drag and drop audio files, or click anywhere to select files'}
     </p>
