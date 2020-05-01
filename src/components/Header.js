@@ -77,7 +77,7 @@ const BitRateSelector = () => {
 
 const VbrMethodSelector = () => {
   const { vbrMethod, setVbrMethod } = useJobs();
-  const { label } = vbrMethodChoices[vbrMethod];
+  const { label } = vbrMethodChoices.find((item) => item.value == vbrMethod);
   return (
     <Dropdown
       id="vbr-method-control"
@@ -108,7 +108,7 @@ export default () => {
         css={css`
           flex-wrap: wrap;
           justify-content: flex-start;
-          font-size: var(--smol);
+          font-size: var(--menutext);
           padding-bottom: var(--med);
         `}
       >

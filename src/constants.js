@@ -122,7 +122,6 @@ export const BIT_RATE_KEY = 'pprmntbitrate';
 export const VBR_METHOD_KEY = 'pprmntvbrmethod';
 
 export const BIT_RATE_CHOICES = [
-  6,
   8,
   12,
   16,

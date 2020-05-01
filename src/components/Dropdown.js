@@ -1,24 +1,50 @@
 /** @jsx jsx */
+import { useState } from 'react';
 import { jsx, css } from '@emotion/core';
 import Button, { ButtonBase } from './Button';
 
+const DropdownItem = ({ item, handleSelect }) => {
+  const handleClick = (e) => {
+    e.stopPropagation();
+    handleSelect(item.value);
+  };
+
+  return (
+    <ButtonBase
+      Component="li"
+      css={css`
+        width: 200px;
+        color: var(--text);
+        text-align: left;
+      `}
+      role="menuitem"
+      tabIndex="0"
+      onClick={handleClick}
+      onKeyDown={handleClick}
+    >
+      {item.label}
+    </ButtonBase>
+  );
+};
+
 export default ({ handleSelect, choices, label, ...rest }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleIsOpen = () => setIsOpen(!isOpen);
+
+  const handleMouseLeave = () => {
+    if (isOpen) setIsOpen(false);
+  };
+
   return (
     <Button
       css={css`
         position: relative;
         height: 20px;
-        ul {
-          display: none;
-        }
-
-        &:hover {
-          ul {
-            display: block;
-          }
-        }
       `}
-      aria-haspopup="true"
+      aria-haspopup="listbox"
+      onClick={toggleIsOpen}
+      aria-expanded={isOpen}
+      onMouseLeave={handleMouseLeave}
       {...rest}
     >
       {label}
@@ -29,27 +55,19 @@ export default ({ handleSelect, choices, label, ...rest }) => {
           position: absolute;
           background: var(--background);
           z-index: 99;
-          top: 20px;
+          top: 21px;
           left: 0px;
           list-style: none;
           box-shadow: 2px 2px 0px var(--muted);
+          display: ${isOpen ? 'block' : 'none'};
         `}
       >
         {choices.map((item) => (
-          <ButtonBase
-            Component="li"
+          <DropdownItem
+            item={item}
+            handleSelect={handleSelect}
             key={item.value}
-            css={css`
-              width: 200px;
-              color: var(--text);
-              text-align: left;
-            `}
-            role="menuitem"
-            onClick={() => handleSelect(item.value)}
-            onKeyDown={() => handleSelect(item.value)}
-          >
-            {item.label}
-          </ButtonBase>
+          />
         ))}
       </ul>
     </Button>

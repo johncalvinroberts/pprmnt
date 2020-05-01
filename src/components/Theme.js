@@ -45,6 +45,7 @@ export const theme = {
   space: {
     xsmol: '0.5rem',
     smol: '1rem',
+    menutext: '1.2rem',
     med: '1.4rem',
     lrg: '2rem',
     xlrg: '2.5rem',
@@ -75,6 +76,10 @@ const getGlobalStyles = (colorMode) => css`
   :root {
     ${varify(theme.colors[colorMode])}
     ${varify(theme.space)}
+  }
+
+  ::selection {
+    background: var(--muted);
   }
 
   body {
