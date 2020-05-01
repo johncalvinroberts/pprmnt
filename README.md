@@ -5,7 +5,7 @@
 A secure MP3 encoder, powered by Web Assembly. [Try it out.](https://pprmnt.cc)
 
 
-![pprmnt screenshot](https://user-images.githubusercontent.com/11850362/80697526-a9545980-8b0b-11ea-9944-5cdb3dd58f18.png)
+![pprmnt screenshot](https://user-images.githubusercontent.com/11850362/80774995-00504200-8b91-11ea-8e4f-1673ca04c4c3.png)
 
 ## Why do we need this?
 
@@ -40,7 +40,6 @@ It's a cool way to spell "peppermint".
 ## Development
 ### Known issues
 * Would really appreciate code review by someone more familiar with WASM, help me.
-* Firefox chokes when decoding some wav files, also [noted by other users on Stack Overflow](https://stackoverflow.com/questions/26169678/why-certain-wav-files-cannot-be-decoded-in-firefox).
 * Queue'ing -- currently, if the user attempts encode a lot of MP3s concurrently, the app will go completely overboard with memory usage. A queue to control the maximum number or size of concurrently encoding "jobs" could help alleviate this.
 * Performance -- current state is not optimized for speed, I just wanted to get this thing working. There are lots of areas for improvement. Currently, the slowest operation is [`BaseAudioContext.decodeAudioData()`](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData).
 
