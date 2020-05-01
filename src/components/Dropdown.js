@@ -18,6 +18,7 @@ const DropdownItem = ({ item, handleSelect }) => {
         text-align: left;
       `}
       role="menuitem"
+      tabIndex="0"
       onClick={handleClick}
       onKeyDown={handleClick}
     >
@@ -54,7 +55,7 @@ export default ({ handleSelect, choices, label, ...rest }) => {
           position: absolute;
           background: var(--background);
           z-index: 99;
-          top: 20px;
+          top: 21px;
           left: 0px;
           list-style: none;
           box-shadow: 2px 2px 0px var(--muted);

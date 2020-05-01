@@ -12,7 +12,7 @@ export default () => (
       position: sticky;
       bottom: 0;
       background: var(--background);
-      font-size: var(--smol);
+      font-size: var(--menutext);
       padding: var(--smol);
       padding-left: var(--xlrg);
     `}

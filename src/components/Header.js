@@ -108,7 +108,7 @@ export default () => {
         css={css`
           flex-wrap: wrap;
           justify-content: flex-start;
-          font-size: var(--smol);
+          font-size: var(--menutext);
           padding-bottom: var(--med);
         `}
       >
