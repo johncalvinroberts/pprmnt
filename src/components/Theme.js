@@ -1,14 +1,8 @@
 /** @jsx jsx */
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-} from 'react';
+import { createContext, useContext, useMemo, useCallback } from 'react';
 import { Global, css, jsx } from '@emotion/core';
 import { COLOR_MODE_KEY } from '../constants';
+import { usePersistentState } from '../hooks';
 
 const varify = (obj) => Object.keys(obj).map((key) => `--${key}: ${obj[key]};`);
 
@@ -98,32 +92,27 @@ const modes = {
   light: 'light',
 };
 
-const getInitialColorMode = () => {
+const getDefaultColorMode = () => {
   const { light, dark } = modes;
-  const setting = localStorage.getItem(COLOR_MODE_KEY);
-  if (setting && modes[setting]) return setting;
   const prefersLight =
     window.matchMedia &&
     window.matchMedia('(prefers-color-scheme: light)').matches;
-  const ret = prefersLight ? light : dark;
-  localStorage.setItem(COLOR_MODE_KEY, ret);
-  return ret;
+  return prefersLight ? light : dark;
 };
 
 export default ({ children }) => {
-  const [colorMode, setColorMode] = useState(getInitialColorMode());
+  const defaultColorMode = useMemo(getDefaultColorMode, []);
+  const [colorMode, setColorMode] = usePersistentState(
+    COLOR_MODE_KEY,
+    defaultColorMode,
+  );
 
   const toggleColorMode = useCallback(() => {
     const { light, dark } = modes;
     const nextColorMode = colorMode === dark ? light : dark;
 
     setColorMode(nextColorMode);
-  }, [colorMode]);
-
-  useEffect(() => {
-    setColorMode(colorMode);
-    localStorage.setItem(COLOR_MODE_KEY, colorMode);
-  }, [colorMode]);
+  }, [colorMode, setColorMode]);
 
   const globalStyles = useMemo(() => getGlobalStyles(colorMode), [colorMode]);
 

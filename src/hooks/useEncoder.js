@@ -1,7 +1,13 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import useAudioContext from './useAudioContext';
 import { MESSAGE_TYPES, LOAD_STATUS } from '../constants';
-import { delay, forceDownload, stripFileExtension, logger } from '../utils';
+import {
+  delay,
+  forceDownload,
+  stripFileExtension,
+  logger,
+  timer,
+} from '../utils';
 
 const log = logger('useEncoder', 'aquamarine');
 
@@ -11,14 +17,14 @@ const { INITIAL, PENDING, OK, ERROR } = LOAD_STATUS;
 
 const createWorker = () => new Worker('../peppermint.worker.js');
 
-export default () => {
+export default (id) => {
   const [error, setError] = useState(null);
   const [isEncoderReady, setIsEncoderReady] = useState(false);
   const [encoded, setEncoded] = useState(null);
   const [trackData, setTrackData] = useState({ fileName: '', meta: {} });
   const [loadStatus, setLoadStatus] = useState(INITIAL);
   const isEncoderReadyRef = useRef(false);
-
+  const { crumb, stop } = timer(id);
   const worker = useMemo(createWorker, []);
 
   const { decodeAudioData } = useAudioContext();
@@ -42,6 +48,7 @@ export default () => {
         setLoadStatus(OK);
         setEncoded(payload);
         break;
+
       default:
         log('Unknown message received from worker');
         break;
@@ -72,6 +79,7 @@ export default () => {
         log(
           `Stripping file extension, original: ${name}, stripped: ${fileName}`,
         );
+        crumb('Start decode audio data');
         const [left, right, meta] = await decodeAudioData(rawFile);
         const options = { bitRate, vbr };
         setTrackData({ meta, fileName });
@@ -89,7 +97,7 @@ export default () => {
         setError(error);
       }
     },
-    [decodeAudioData, error, worker],
+    [decodeAudioData, error, worker], //eslint-disable-line
   );
 
   const download = useCallback(() => {
@@ -131,5 +139,17 @@ export default () => {
     }
   }, [error]);
 
+  useEffect(() => {
+    crumb(loadStatus);
+    if (loadStatus === OK || loadStatus === ERROR) {
+      const {
+        meta: { duration },
+      } = trackData;
+      const totalTime = stop();
+      const seconds = totalTime / 1000;
+      const speedIndex = (duration / totalTime) * 1000;
+      log(`🏎🏎🏎Total time: ${seconds}seconds, speed index: ${speedIndex}`);
+    }
+  }, [loadStatus]); //eslint-disable-line
   return { error, worker, encode, loadStatus, download, trackData };
 };

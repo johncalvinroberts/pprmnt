@@ -14,9 +14,7 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
-    "browser-id3-writer": "^4.4.0",
     "hhmmss": "^1.0.0",
-    "id3-parser": "^2.0.0",
     "react": ">=16.3.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "^10.2.2",
