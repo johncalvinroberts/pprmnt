@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { jsx, css } from '@emotion/core';
 import hhmmss from 'hhmmss';
 import { useEncoder } from '../hooks';
@@ -19,12 +19,37 @@ const placeholder = css`
   width: 120px;
 `;
 
+const FileNameShow = ({ fileName }) => {
+  const [name, ext] = useMemo(() => {
+    const extIndex = fileName.lastIndexOf('.');
+    const name = fileName.substring(0, extIndex);
+    const ext = fileName.substring(extIndex);
+    return [name, ext];
+  }, [fileName]);
+
+  return (
+    <Flex>
+      <div
+        css={css`
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        `}
+      >
+        {name}
+      </div>
+      <div>{ext}</div>
+    </Flex>
+  );
+};
+
 const JobItem = ({ id, file }) => {
   const { crumb } = timer(id);
   const { encode, error, loadStatus, download, trackData } = useEncoder(id);
 
   const { remove, bitRate, vbrMethod } = useJobs();
   const { name: fileName } = file;
+
   const { meta } = trackData;
   const { duration } = meta;
   const handleRemove = () => remove(id);
@@ -58,13 +83,16 @@ const JobItem = ({ id, file }) => {
       <div
         css={css`
           overflow: hidden;
-          text-overflow: ellipsis;
           display: block;
-          max-width: 200px;
+          max-width: 250px;
           white-space: nowrap;
         `}
       >
-        {fileName || <div css={placeholder} />}
+        {fileName ? (
+          <FileNameShow fileName={fileName} />
+        ) : (
+          <div css={placeholder} />
+        )}
       </div>
       <Flex
         css={css`
