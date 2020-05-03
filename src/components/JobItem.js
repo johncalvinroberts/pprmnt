@@ -8,7 +8,7 @@ import { useJobs } from './JobsContext';
 import { Down } from './SVG';
 import Button, { CloseButton } from './Button';
 import Loader from './Loader';
-import { truncateText } from '../utils';
+import { truncateText, timer } from '../utils';
 import Flex from './Flex';
 
 const { INITIAL, PENDING, OK } = LOAD_STATUS;
@@ -20,7 +20,8 @@ const placeholder = css`
 `;
 
 const JobItem = ({ id, file }) => {
-  const { encode, error, loadStatus, download, trackData } = useEncoder();
+  const { crumb } = timer(id);
+  const { encode, error, loadStatus, download, trackData } = useEncoder(id);
 
   const { remove, bitRate, vbrMethod } = useJobs();
   const { name: fileName } = file;
@@ -29,8 +30,11 @@ const JobItem = ({ id, file }) => {
   const handleRemove = () => remove(id);
 
   useEffect(() => {
-    if (loadStatus === INITIAL) encode(file, bitRate, vbrMethod);
-  }, [bitRate, encode, file, loadStatus, vbrMethod]);
+    if (loadStatus === INITIAL) {
+      crumb('Job Item defer to useEncoder');
+      encode(file, bitRate, vbrMethod);
+    }
+  }, [bitRate, encode, file, loadStatus, vbrMethod]); //eslint-disable-line
 
   return (
     <Flex

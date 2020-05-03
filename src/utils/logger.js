@@ -81,16 +81,42 @@ const buildLogger = ({ namespace, color }) => {
   return log;
 };
 
-export const timer = (label, namespace, color) => {
-  const start = new Date();
-  const stop = () => {
-    const end = new Date();
-    const elapsedTime = end - start;
-    const [namespaceString, namespaceStyle] = getNameSpace(namespace, color);
-    const logString = `⏱ ${namespaceString}: ${elapsedTime}ms`;
-    console.timeEnd(logString, namespaceStyle);
+const timerCache = {};
+
+export const timer = (id) => {
+  const start = () => {
+    const crumbs = [];
+    const stamp = new Date().valueOf();
+    const elapsedTime = 0;
+    const crumb = { name: 'start', stamp, elapsedTime, totalTime: 0 };
+    crumbs.push(crumb);
+    timerCache[id] = crumbs;
   };
-  return stop;
+
+  const crumb = (name) => {
+    const crumbs = timerCache[id];
+    const stamp = new Date().valueOf();
+    const { stamp: start } = crumbs[0];
+    const { stamp: prev } = crumbs[crumbs.length - 1];
+    const elapsedTime = stamp - prev;
+    const totalTime = stamp - start;
+    const crumb = { name, stamp, elapsedTime, totalTime };
+    crumbs.push(crumb);
+  };
+
+  const stop = () => {
+    const crumbs = timerCache[id];
+    const stamp = new Date().valueOf();
+    const { stamp: start } = crumbs[0];
+    const { stamp: prev } = crumbs[crumbs.length - 1];
+    const elapsedTime = stamp - prev;
+    const totalTime = stamp - start;
+    const crumb = { name: 'end', stamp, elapsedTime, totalTime };
+    crumbs.push(crumb);
+    console.table(crumbs);
+    return totalTime;
+  };
+  return { start, crumb, stop };
 };
 
 /* eslint-enable no-console */

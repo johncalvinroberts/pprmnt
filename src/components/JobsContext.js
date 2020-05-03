@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
-import { generateUuid, logger } from '../utils';
+import { generateUuid, logger, timer } from '../utils';
 import { BIT_RATE_KEY, VBR_METHOD_KEY, VBR_CHOICES } from '../constants';
 import { usePersistentState } from '../hooks';
 
@@ -35,6 +35,8 @@ const Jobs = ({ children }) => {
         const id = generateUuid();
         log(`adding job ${id}`);
         log(file);
+        const { start } = timer(id);
+        start();
         return { id, file };
       });
 
