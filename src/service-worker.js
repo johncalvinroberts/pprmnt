@@ -57,7 +57,7 @@ self.addEventListener('fetch', (e) => {
         return returnCachedAsset();
       }
 
-      //otherwise, hit network and use returnCachedAsset if it fails
+      // otherwise, hit network and use returnCachedAsset if it fails
       return fetch(e.request).catch(returnCachedAsset);
     })(),
   );

@@ -13,6 +13,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-transform-runtime": "^7.10.3",
     "@emotion/core": "^10.0.28",
     "hhmmss": "^1.0.0",
     "react": ">=16.3.0",
@@ -23,11 +26,13 @@
     "wouter": "^2.4.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-wcl-frontend": "^1.0.11",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
+    "eslint": "^7.3.1",
+    "eslint-config-wcl-frontend": "^2.0.1",
     "parcel": "latest",
     "parcel-plugin-static-files-copy": "^2.4.3",
-    "prettier": "^2.0.2"
+    "prettier": "^2.0.5"
   },
   "reactSnap": {
     "source": "dist",
