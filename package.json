@@ -23,7 +23,7 @@
     "wouter": "^2.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.4",
+    "@babel/core": "^7.11.5",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "eslint": "^7.3.1",
