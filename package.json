@@ -26,7 +26,7 @@
     "@babel/core": "^7.11.4",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
-    "eslint": "^7.3.1",
+    "eslint": "^7.8.1",
     "eslint-config-wcl-frontend": "^2.0.1",
     "parcel": "latest",
     "parcel-plugin-static-files-copy": "^2.4.3",
