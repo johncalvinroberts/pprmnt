@@ -38,15 +38,18 @@ export default () => {
       // converts the array buffer to an audio buffer
       // also see: https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData
       const rawAudioBuffer = await decode(ctx, audioData);
+      const { numberOfChannels } = rawAudioBuffer;
       log(`Converted array buffer raw AudioBuffer`);
       // get the right and left channel and meta info from the audio buffer
       // see: https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
       const left = rawAudioBuffer.getChannelData(0);
-      const right = rawAudioBuffer.getChannelData(1);
+      const right =
+        numberOfChannels > 1 ? rawAudioBuffer.getChannelData(1) : null;
       const meta = {
         duration: rawAudioBuffer.duration,
         length: rawAudioBuffer.length,
         sampleRate: rawAudioBuffer.sampleRate,
+        numberOfChannels,
       };
       log(meta);
       return [left, right, meta];

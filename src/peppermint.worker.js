@@ -4,8 +4,6 @@ import { logger } from './utils';
 // config
 const { CREATE_JOB, CLEANUP, FINISH_JOB, INIT } = MESSAGE_TYPES;
 
-const channels = 2;
-
 // set up the worker
 const log = logger('peppermint.worker', 'springgreen');
 log('worker mounted');
@@ -52,7 +50,7 @@ async function buildMp3(payload, meta, options) {
   log('buildMp3');
   try {
     // sample rate, length passed from audio context meta
-    const { sampleRate, length: nsamples } = meta;
+    const { sampleRate, length: nsamples, numberOfChannels } = meta;
     const { left, right } = payload;
     const { bitRate, vbr } = options;
 
@@ -60,7 +58,7 @@ async function buildMp3(payload, meta, options) {
     log('Creating encoder');
     const encoder = Instance._encoder_create(
       sampleRate,
-      channels,
+      numberOfChannels,
       bitRate,
       vbr,
     );
@@ -84,11 +82,15 @@ async function buildMp3(payload, meta, options) {
       samplesLeftPtr,
     );
     samplesLeft.set(left);
+
     const samplesRight = new Float32Array(
       Instance.HEAPF32.buffer,
       samplesRightPtr,
     );
-    samplesRight.set(right);
+    // right could be null, if it's mono
+    if (right) {
+      samplesRight.set(right);
+    }
 
     const coded = new Uint8Array(Instance.HEAPF32.buffer, codedPtr);
     const [data, length] = encode(
