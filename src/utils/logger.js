@@ -86,7 +86,7 @@ const timerCache = {};
 export const timer = (id) => {
   const start = () => {
     const crumbs = [];
-    const stamp = new Date().valueOf();
+    const stamp = window.performance && window.performance.now();
     const elapsedTime = 0;
     const crumb = { name: 'start', stamp, elapsedTime, totalTime: 0 };
     crumbs.push(crumb);
@@ -95,7 +95,7 @@ export const timer = (id) => {
 
   const crumb = (name) => {
     const crumbs = timerCache[id];
-    const stamp = new Date().valueOf();
+    const stamp = window.performance && window.performance.now();
     const { stamp: start } = crumbs[0];
     const { stamp: prev } = crumbs[crumbs.length - 1];
     const elapsedTime = stamp - prev;
@@ -106,7 +106,7 @@ export const timer = (id) => {
 
   const stop = () => {
     const crumbs = timerCache[id];
-    const stamp = new Date().valueOf();
+    const stamp = window.performance && window.performance.now();
     const { stamp: start } = crumbs[0];
     const { stamp: prev } = crumbs[crumbs.length - 1];
     const elapsedTime = stamp - prev;
