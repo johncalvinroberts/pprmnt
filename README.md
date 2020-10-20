@@ -39,7 +39,6 @@ It's a cool way to spell "peppermint".
 
 ## Development
 ### Known issues
-* Not working with mono source audio
 * Would really appreciate code review by someone more familiar with WASM, help me.
 * Queue'ing -- currently, if the user attempts encode a lot of MP3s concurrently, the app will go completely overboard with memory usage. A queue to control the maximum number or size of concurrently encoding "jobs" could help alleviate this.
 * Performance -- current state is not optimized for speed, I just wanted to get this thing working. There are lots of areas for improvement. Currently, the slowest operation is [`BaseAudioContext.decodeAudioData()`](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData).
@@ -64,3 +63,8 @@ If you want to contribute, here's how to get the dev workflow running locally...
 * `make build-wasm` - compiles the web assembly + javascript wrapper
 * `yarn start` - run the dev server, open `http://localhost:1234/` to see the app running
 * `yarn build` - build and prerender for prod deployment
+
+If you experience inconveniently long install times, please try running this command before `make install`:
+```
+export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+```
