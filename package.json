@@ -15,7 +15,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.35",
     "hhmmss": "^1.0.0",
-    "react": ">=16.3.0",
+    "react": ">=16.14.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
     "react-snap": "^1.23.0",
