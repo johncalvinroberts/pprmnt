@@ -16,7 +16,7 @@
     "@emotion/core": "^10.0.35",
     "hhmmss": "^1.0.0",
     "react": ">=16.14.0",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.14.0",
     "react-dropzone": "^11.3.2",
     "react-snap": "^1.23.0",
     "use-deep-compare-effect": "^1.6.1",
