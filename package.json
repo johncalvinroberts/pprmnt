@@ -13,7 +13,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@emotion/core": "^10.0.35",
+    "@emotion/core": "^11.0.0",
     "hhmmss": "^1.0.0",
     "react": ">=16.14.0",
     "react-dom": "^16.14.0",
