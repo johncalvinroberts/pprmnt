@@ -30,7 +30,7 @@
     "eslint-config-wcl-frontend": "^2.0.2",
     "parcel": "latest",
     "parcel-plugin-static-files-copy": "^2.6.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.3.2"
   },
   "reactSnap": {
     "source": "dist",
