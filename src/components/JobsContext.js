@@ -55,6 +55,19 @@ const Jobs = ({ children }) => {
     [jobs],
   );
 
+  const finish = useCallback(
+    (id, encoded, trackData) => {
+      const nextJobs = jobs.map((item) => {
+        if (item.id === id) {
+          return { ...item, trackData, encoded };
+        }
+        return item;
+      });
+      setJobs(nextJobs);
+    },
+    [setJobs, jobs],
+  );
+
   return (
     <JobsContext.Provider
       value={{
@@ -65,6 +78,7 @@ const Jobs = ({ children }) => {
         bitRate,
         vbrMethod,
         setVbrMethod,
+        finish,
       }}
     >
       {children}

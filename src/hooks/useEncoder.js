@@ -3,10 +3,10 @@ import useAudioContext from './useAudioContext';
 import { MESSAGE_TYPES, LOAD_STATUS } from '../constants';
 import {
   delay,
-  forceDownload,
   stripFileExtension,
   logger,
   timer,
+  createMp3Download,
 } from '../utils';
 
 const log = logger('useEncoder', 'aquamarine');
@@ -102,9 +102,7 @@ export default (id) => {
 
   const download = useCallback(() => {
     if (!encoded) return;
-    const { fileName } = trackData;
-    const blob = new Blob([encoded], { type: 'audio/mpeg' });
-    forceDownload({ blob, fileName, ext: '.mp3' });
+    createMp3Download(encoded, trackData.fileName);
   }, [encoded, trackData]);
 
   // effects
@@ -151,5 +149,5 @@ export default (id) => {
       log(`🏎🏎🏎Total time: ${seconds}seconds, speed index: ${speedIndex}`);
     }
   }, [loadStatus]); //eslint-disable-line
-  return { error, worker, encode, loadStatus, download, trackData };
+  return { error, worker, encode, loadStatus, download, trackData, encoded };
 };

@@ -45,9 +45,10 @@ const FileNameShow = ({ fileName }) => {
 
 const JobItem = ({ id, file }) => {
   const { crumb } = timer(id);
-  const { encode, error, loadStatus, download, trackData } = useEncoder(id);
+  const { encode, error, loadStatus, download, trackData, encoded } =
+    useEncoder(id);
 
-  const { remove, bitRate, vbrMethod } = useJobs();
+  const { remove, finish, bitRate, vbrMethod } = useJobs();
   const { name: fileName } = file;
 
   const { meta } = trackData;
@@ -60,6 +61,12 @@ const JobItem = ({ id, file }) => {
       encode(file, bitRate, vbrMethod);
     }
   }, [bitRate, encode, file, loadStatus, vbrMethod]); //eslint-disable-line
+
+  useEffect(() => {
+    if (loadStatus === OK) {
+      finish(id, encoded, trackData);
+    }
+  }, [loadStatus, id, encoded]); //eslint-disable-line
 
   return (
     <Flex

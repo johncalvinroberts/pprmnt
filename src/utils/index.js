@@ -9,4 +9,5 @@ export { default as fileToArrayBuffer } from './fileToArrayBuffer';
 export { default as generateUuid } from './generateUuid';
 export { default as truncateText } from './truncateText';
 export { default as logger } from './logger';
+export { default as createMp3Download } from './createMp3Download';
 export { timer } from './logger';

@@ -2,6 +2,7 @@
 import { jsx } from '@emotion/core';
 import { useJobs } from './JobsContext';
 import JobItem from './JobItem';
+import BatchDownloadButton from './BatchDownloadButton';
 
 const JobsList = () => {
   const { jobs } = useJobs();
@@ -11,6 +12,7 @@ const JobsList = () => {
       {jobs.map((item) => (
         <JobItem id={item.id} file={item.file} key={item.id} />
       ))}
+      <BatchDownloadButton />
     </div>
   );
 };
