@@ -38,38 +38,26 @@ const Privacy = () => {
         maintains security of audio files, please check the
         <Link href="/about">about section.</Link>
       </p>
-      <p>
-        That being said, <strong>pprmnt</strong> does implement a lightweight
-        analytics bundle with{' '}
-        <a
-          href="https://usefathom.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          fathom analytics
-        </a>{' '}
-        to track usage of the app.
-      </p>
       <h3>What Information Do We Collect?</h3>
-      <p>
+      {/* <p>
         We collect simple analytics about traffic to the application, explicitly
         limited to:
       </p>
       <ul>
         <li>Which pages are visited</li>
         <li>How much time is spent on the application</li>
-      </ul>
+      </ul> */}
       <p>
         Absolutely no personal data is tracked or stored by the application.
       </p>
       <p>Absolutely no audio data is tracked or stored by the application.</p>
       <h3>How Do We Use the Information?</h3>
-      <p>
+      {/* <p>
         By aggregating which pages are visited the most and how much time is
         spent on the application, we can hopefully discern some information
         about interest in the application and its usefulness to musicians and
         sound artists.
-      </p>
+      </p> */}
       <h3>Questions</h3>
       <p>
         Any questions about this Privacy Policy should be addressed to:
