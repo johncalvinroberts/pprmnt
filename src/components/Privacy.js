@@ -38,15 +38,26 @@ const Privacy = () => {
         maintains security of audio files, please check the
         <Link href="/about">about section.</Link>
       </p>
+      <p>
+        That being said, <strong>pprmnt</strong> does use{' '}
+        <a
+          rel="noreferrer noopener"
+          target="_blank"
+          href="https://www.cloudflare.com/analytics/"
+        >
+          Cloudflare Analytics
+        </a>{' '}
+        to track some very basic things of the application.
+      </p>
       <h3>What Information Do We Collect?</h3>
-      {/* <p>
+      <p>
         We collect simple analytics about traffic to the application, explicitly
         limited to:
       </p>
       <ul>
         <li>Which pages are visited</li>
         <li>How much time is spent on the application</li>
-      </ul> */}
+      </ul>
       <p>
         Absolutely no personal data is tracked or stored by the application.
       </p>
