@@ -6,6 +6,7 @@
   "repository": "https://github.com/johncalvinroberts/peppermint",
   "author": "John Roberts",
   "scripts": {
+    "postinstall": "node node_modules/puppeteer/install.js",
     "prebuild": "make clean-build",
     "build": "parcel build --no-cache --no-content-hash src/index.html",
     "postbuild": "react-snap",
