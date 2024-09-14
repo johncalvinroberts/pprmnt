@@ -12,4 +12,8 @@ clean-build:
 clean-artifacts:
 	rm -rf modules/artifacts/*.js\
 	rm -rf modules/artifacts/*.wasm
+
+noop:
+	echo "No operation performed."
+
 clean: clean-artifacts clean-build
