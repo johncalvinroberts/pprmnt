@@ -6,10 +6,8 @@
   "repository": "https://github.com/johncalvinroberts/peppermint",
   "author": "John Roberts",
   "scripts": {
-    "postinstall": "unset PUPPETEER_SKIP_CHROMIUM_DOWNLOAD && node node_modules/puppeteer/install.js",
     "prebuild": "make clean-build",
     "build": "parcel build --no-cache --no-content-hash src/index.html",
-    "postbuild": "react-snap",
     "start": "parcel serve src/index.html",
     "lint": "eslint ."
   },
@@ -19,7 +17,6 @@
     "react": ">=17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.3.4",
-    "react-snap": "^1.23.0",
     "use-deep-compare-effect": "^1.6.1",
     "wouter": "^2.7.4"
   },
@@ -32,14 +29,6 @@
     "parcel": "latest",
     "parcel-plugin-static-files-copy": "^2.6.0",
     "prettier": "^2.3.2"
-  },
-  "reactSnap": {
-    "source": "dist",
-    "inlineCss": true,
-    "puppeteerArgs": [
-      "--no-sandbox",
-      "--disable-setuid-sandbox"
-    ]
   },
   "staticFiles": {
     "staticPath": "modules/artifacts",
